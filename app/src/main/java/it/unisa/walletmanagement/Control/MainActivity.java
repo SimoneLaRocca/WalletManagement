@@ -1,8 +1,10 @@
-package it.unisa.walletmanagement;
+package it.unisa.walletmanagement.Control;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import it.unisa.walletmanagement.R;
 
 public class MainActivity extends AppCompatActivity {
 
