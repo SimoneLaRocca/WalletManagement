@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,31 +8,27 @@
     tools:context=".Control.GestioneConti.HomeActivity">
 
     <LinearLayout
+        android:id="@+id/linear_layout_conti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button_crea_conto"
         android:orientation="vertical"
         android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lista conti"
+            android:text="LISTA CONTI"
             android:textSize="20dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saldo: "
+            android:text="Totale saldo: "
             android:textSize="20dp"
             android:textColor="@color/black"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
 
         <ListView
             android:id="@+id/list_view_conti"
@@ -40,16 +36,18 @@
             android:layout_height="wrap_content"
             android:background="@drawable/border"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginVertical="20dp"/>
 
-        <Button
-            android:id="@+id/button_crea_conto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crea conto"
-            android:backgroundTint="#F44336"/>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/button_crea_conto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="Crea conto"
+        android:backgroundTint="#F44336"/>
 
-
-</LinearLayout>
+</RelativeLayout>
