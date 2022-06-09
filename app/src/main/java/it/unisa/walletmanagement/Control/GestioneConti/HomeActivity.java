@@ -2,6 +2,7 @@ package it.unisa.walletmanagement.Control.GestioneConti;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,13 +23,13 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+        setContentView(R.layout.activity_home);
 
         ListView listViewConto = findViewById(R.id.list_view_conti);
         contoAdapter = new ContoAdapter(this, R.layout.list_view_conto_element, new ArrayList<Conto>());
         listViewConto.setAdapter(contoAdapter);
 
-        for (int i = 0; i<100; i++){
+        for (int i = 0; i<10; i++){
             Conto esempio_conto = new Conto("Lavoro", 2000f, null, "");
             contoAdapter.add(esempio_conto);
         }
@@ -41,5 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
+    public void creaConto(View view) {
+        Intent i = new Intent(HomeActivity.this, ContoActivity.class);
+        startActivity(i);
+    }
 }

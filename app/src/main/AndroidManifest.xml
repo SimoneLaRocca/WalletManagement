@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WalletManagement">
         <activity
+            android:name=".Control.GestioneConti.ContoActivity"
+            android:exported="true" />
+        <activity
             android:name=".Control.GestioneConti.HomeActivity"
             android:exported="true">
             <intent-filter>

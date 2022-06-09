@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Control.GestioneConti.HomeActivity">
 
     <LinearLayout
@@ -13,22 +12,30 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_crea_conto"
         android:orientation="vertical"
-        android:gravity="center">
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LISTA CONTI"
-            android:textSize="20dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/black"/>
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Totale saldo: "
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LISTA CONTI"
+                android:textSize="20dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Totale saldo: "
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
 
         <ListView
             android:id="@+id/list_view_conti"
@@ -42,6 +49,7 @@
 
     <Button
         android:id="@+id/button_crea_conto"
+        android:onClick="creaConto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

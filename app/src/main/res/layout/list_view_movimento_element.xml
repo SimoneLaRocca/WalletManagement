@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="5dp">
+
+    <FrameLayout
+        android:id="@+id/frame_layout_color"
+        android:layout_width="10dp"
+        android:layout_height="24dp"
+        android:background="#4CAF50"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_categoria_movimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:textSize="24dp"
+        android:text="Lavoro"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_valore_movimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="24dp"
+        android:text="1200"
+        android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/image_view_cancella_movimento"
+        android:clickable="true"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_delete" />
+
+</LinearLayout>

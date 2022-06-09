@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,15 @@ public class ContoAdapter extends ArrayAdapter<Conto> {
 
         TextView tvNome = convertView.findViewById(R.id.tv_nome_conto);
         TextView tvSaldo = convertView.findViewById(R.id.tv_saldo_conto);
+        ImageView ivCancella = convertView.findViewById(R.id.image_view_cancella_conto);
+        ivCancella.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ContoAdapter.this.remove(getItem(position));
+                ContoAdapter.this.notifyDataSetChanged();
+                // cancella conto
+            }
+        });
 
         tvNome.setText(conto.getNome());
         tvSaldo.setText("€ "+Float.toString(conto.getSaldo()));
