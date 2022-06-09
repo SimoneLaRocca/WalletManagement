@@ -15,6 +15,7 @@ import it.unisa.walletmanagement.R;
 public class HomeActivity extends AppCompatActivity {
 
     ContoAdapter contoAdapter;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
