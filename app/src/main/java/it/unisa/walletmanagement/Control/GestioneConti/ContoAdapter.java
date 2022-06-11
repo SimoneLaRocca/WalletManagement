@@ -16,6 +16,8 @@ import java.util.List;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
+// Activity usata per visulizzare una lista dei movimenti
+// di uno specifico conto dell'utente
 public class ContoAdapter extends ArrayAdapter<Conto> {
     public ContoAdapter(@NonNull Context context, int resource, @NonNull List<Conto> objects) {
         super(context, resource, objects);

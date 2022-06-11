@@ -1,8 +1,9 @@
 package it.unisa.walletmanagement.Model.Entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Conto {
+public class Conto implements Serializable {
     private String nome;
     private float saldo;
     private List<Movimento> movimenti;

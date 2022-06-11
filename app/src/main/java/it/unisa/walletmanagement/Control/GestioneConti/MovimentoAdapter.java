@@ -18,6 +18,8 @@ import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
+// Fragment usato nell'Activity ContoActivity per modificare un
+// movimento della lista dei movimenti di uno specifico conto
 public class MovimentoAdapter extends ArrayAdapter<Movimento> {
 
     public MovimentoAdapter(@NonNull Context context, int resource, @NonNull List<Movimento> objects) {

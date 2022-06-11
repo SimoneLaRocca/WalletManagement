@@ -1,12 +1,13 @@
 package it.unisa.walletmanagement.Model.Entity;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public class Movimento {
+public class Movimento implements Serializable {
     private int id;
     private String nome;
     private GregorianCalendar data;
-    private int tipo;
+    private int tipo; // 0: uscita , 1: entrata
     private float valore;
     private String categoria;
 

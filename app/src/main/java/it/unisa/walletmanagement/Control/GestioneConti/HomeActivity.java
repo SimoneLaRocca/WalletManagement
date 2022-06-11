@@ -14,36 +14,40 @@ import java.util.ArrayList;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
+// Activity home usata per visualizzare la lista completa
+// dei conti dell'utente
 public class HomeActivity extends AppCompatActivity {
 
     ContoAdapter contoAdapter;
-    ListView listView;
-    TextView textView;
+    ListView listViewConto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ListView listViewConto = findViewById(R.id.list_view_conti);
+        listViewConto = findViewById(R.id.list_view_conti);
         contoAdapter = new ContoAdapter(this, R.layout.list_view_conto_element, new ArrayList<Conto>());
         listViewConto.setAdapter(contoAdapter);
 
         for (int i = 0; i<10; i++){
-            Conto esempio_conto = new Conto("Lavoro", 2000f, null, "");
-            contoAdapter.add(esempio_conto);
+            Conto test = new Conto("Lavoro", 2000f, null, "");
+            contoAdapter.add(test);
         }
 
         listViewConto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // test
+                Conto conto = (Conto) listViewConto.getItemAtPosition(i);
+                Intent intent = new Intent(HomeActivity.this, ContoActivity.class);
+                intent.putExtra("conto", conto);
+                startActivity(intent);
             }
         });
     }
 
     public void creaConto(View view) {
-        Intent i = new Intent(HomeActivity.this, ContoActivity.class);
-        startActivity(i);
+        // apri fragment dialog per inserire input
+
     }
 }
