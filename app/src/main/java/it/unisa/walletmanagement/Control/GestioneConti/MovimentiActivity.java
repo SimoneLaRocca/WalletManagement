@@ -15,21 +15,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import it.unisa.walletmanagement.Model.Entity.Conto;
+import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-// Activity home usata per visualizzare la lista completa
-// dei conti dell'utente
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MovimentiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ContoAdapter contoAdapter;
-    ListView listViewConto;
+    ListView listViewMovEntrate;
+    ListView listViewMovUscite;
+    MovimentoAdapter movimentoAdapterEntrate;
+    MovimentoAdapter movimentoAdapterUscite;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nav_activity_home);
+        setContentView(R.layout.nav_activity_movimenti);
 
         // navigation drawer code
         drawerLayout = findViewById(R.id.drawer_view);
@@ -52,28 +52,49 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        listViewConto = findViewById(R.id.list_view_conti);
-        contoAdapter = new ContoAdapter(this, R.layout.list_view_conto_element, new ArrayList<Conto>());
-        listViewConto.setAdapter(contoAdapter);
-
+        // list view entrate
+        listViewMovEntrate = findViewById(R.id.list_view_movimenti_entrate);
+        movimentoAdapterEntrate = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
+        listViewMovEntrate.setAdapter(movimentoAdapterEntrate);
         for (int i = 0; i<10; i++){
-            Conto test = new Conto("Lavoro", 2000f, null, "");
-            contoAdapter.add(test);
+            Movimento test = new Movimento(1, "Prova", null, 1, 1000, "Lavoro");
+            movimentoAdapterEntrate.add(test);
         }
 
-        listViewConto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // list view uscite
+        listViewMovUscite = findViewById(R.id.list_view_movimenti_uscite);
+        movimentoAdapterUscite = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
+        listViewMovUscite.setAdapter(movimentoAdapterUscite);
+        for (int i = 0; i<10; i++){
+            Movimento test = new Movimento(1, "Prova", null, 0, 1000, "Lavoro");
+            movimentoAdapterUscite.add(test);
+        }
+
+        listViewMovEntrate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Conto conto = (Conto) listViewConto.getItemAtPosition(i);
-                Intent intent = new Intent(HomeActivity.this, ContoActivity.class);
-                intent.putExtra("conto", conto);
-                startActivity(intent);
+                // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
+                Movimento movimento = (Movimento) listViewMovEntrate.getItemAtPosition(i);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movimento", movimento);
+                MovimentoFragment dialog = new MovimentoFragment();
+                dialog.setArguments(bundle);
+                dialog.show(getFragmentManager(), "Movimento");
             }
         });
-    }
 
-    public void creaConto(View view) {
-        // apri fragment dialog per inserire input
+        listViewMovUscite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
+                Movimento movimento = (Movimento) listViewMovUscite.getItemAtPosition(i);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movimento", movimento);
+                MovimentoFragment dialog = new MovimentoFragment();
+                dialog.setArguments(bundle);
+                dialog.show(getFragmentManager(), "Movimento");
+            }
+        });
 
     }
 
@@ -104,10 +125,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId())
         {
             case R.id.home:
+                i = new Intent(MovimentiActivity.this, HomeActivity.class);
+                startActivity(i);
                 break;
             case R.id.movimenti:
-                i = new Intent(HomeActivity.this, MovimentiActivity.class);
-                startActivity(i);
                 break;
             case R.id.categorie:
                 break;

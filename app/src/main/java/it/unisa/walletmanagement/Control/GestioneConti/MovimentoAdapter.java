@@ -35,8 +35,9 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
         Movimento movimento = getItem(position);
 
         FrameLayout flColor = convertView.findViewById(R.id.frame_layout_color);
-        TextView tvCategoria = convertView.findViewById(R.id.tv_categoria_movimento);
-        TextView tvValore = convertView.findViewById(R.id.tv_valore_movimento);
+        TextView tvNome = convertView.findViewById(R.id.text_view_nome_movimento);
+        TextView tvCategoria = convertView.findViewById(R.id.text_view_categoria_movimento);
+        TextView tvValore = convertView.findViewById(R.id.text_view_valore_movimento);
         ImageView ivCancella = convertView.findViewById(R.id.image_view_cancella_movimento);
         ivCancella.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +54,7 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
             flColor.setBackgroundColor(0xFF4CAF50);
         }
 
+        tvNome.setText(movimento.getNome());
         tvCategoria.setText(movimento.getCategoria());
         tvValore.setText("€ "+Float.toString(movimento.getValore()));
 

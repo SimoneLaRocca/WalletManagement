@@ -6,46 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".Control.GestioneConti.ContoActivity">
 
+    <include
+        android:id="@+id/layout_toolbar"
+        layout="@layout/toolbar"/>
+
     <LinearLayout
         android:id="@+id/linear_layout_movimenti_conto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_aggiungi_movimento_conto"
         android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_view_nome_conto"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:text="CONTO: "
                 android:textSize="20dp"
-                android:layout_marginBottom="20dp"
+                android:textStyle="bold"
+                android:layout_marginVertical="20dp"
                 android:textColor="@color/black"/>
 
-            <TextView
-                android:id="@+id/text_view_saldo_conto"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Totale saldo: "
-                android:textSize="20dp"
-                android:textColor="@color/black"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Lista movimenti"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/text_view_saldo_conto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    android:layout_marginRight="20dp"
+                    android:text="Totale saldo: "
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <ListView
             android:id="@+id/list_view_movimenti_conto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="20dp"/>
+            android:layout_height="match_parent"
+            android:background="@drawable/border_red_209"
+            android:layout_margin="20dp"/>
 
     </LinearLayout>
 
@@ -57,6 +79,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="Aggiungi movimento"
-        android:backgroundTint="#F44336"/>
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red_209"/>
 
 </RelativeLayout>

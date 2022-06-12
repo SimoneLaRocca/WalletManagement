@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WalletManagement">
         <activity
+            android:name=".Control.GestioneConti.CategorieActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Control.GestioneConti.MovimentiActivity"
+            android:exported="true" />
+        <activity
             android:name=".Control.GestioneConti.ContoActivity"
             android:exported="true" />
         <activity
@@ -21,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

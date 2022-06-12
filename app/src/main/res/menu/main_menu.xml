@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item android:id="@+id/movimenti"
+            android:icon="@drawable/ic_movimenti"
+            android:title="Movimenti"/>
+
+        <item android:id="@+id/categorie"
+            android:icon="@drawable/ic_categorie"
+            android:title="Categorie"/>
+
+        <item android:id="@+id/calcolatrice"
+            android:icon="@drawable/ic_calcolatrice"
+            android:title="Calcolatrice"/>
+
+        <item android:id="@+id/grafici"
+            android:icon="@drawable/ic_grafici"
+            android:title="Grafici" />
+
+        <item android:id="@+id/listaSpesa"
+            android:icon="@drawable/ic_lista_spesa"
+            android:title="Lista della Spesa"/>
+
+        <item android:id="@+id/impostazioni"
+            android:icon="@drawable/ic_impostazioni"
+            android:title="Impostazioni"/>
+
+        <item android:id="@+id/logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout"/>
+    </group>
+</menu>

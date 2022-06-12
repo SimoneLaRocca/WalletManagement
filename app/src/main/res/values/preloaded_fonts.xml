@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/averia_libre_light</item>
+        <item>@font/balsamiq_sans</item>
+        <item>@font/doppio_one</item>
+        <item>@font/duru_sans</item>
+        <item>@font/gudea</item>
+        <item>@font/spicy_rice</item>
+        <item>@font/titan_one</item>
+    </array>
+</resources>
