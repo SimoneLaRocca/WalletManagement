@@ -1,4 +1,4 @@
-package it.unisa.walletmanagement.Control.GestioneConti;
+package it.unisa.walletmanagement.Control.GestioneConti.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 

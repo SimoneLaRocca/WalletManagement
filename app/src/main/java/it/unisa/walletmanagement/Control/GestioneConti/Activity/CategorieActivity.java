@@ -1,4 +1,4 @@
-package it.unisa.walletmanagement.Control.GestioneConti;
+package it.unisa.walletmanagement.Control.GestioneConti.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,21 +15,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
+import it.unisa.walletmanagement.Control.GestioneConti.Adapter.CategorieAdapter;
+import it.unisa.walletmanagement.Control.GestioneConti.Adapter.ContoAdapter;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
-// Activity home usata per visualizzare la lista completa
-// dei conti dell'utente
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CategorieActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ContoAdapter contoAdapter;
-    ListView listViewConto;
+    ListView listViewCategorie;
+    CategorieAdapter categorieAdapter;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -39,9 +38,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nav_activity_home);
+        setContentView(R.layout.nav_activity_categorie);
 
-        // navigation drawer code
+        // navigation drawer
         drawerLayout = findViewById(R.id.drawer_view);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
@@ -52,29 +51,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        listViewConto = findViewById(R.id.list_view_conti);
-        contoAdapter = new ContoAdapter(this, R.layout.list_view_conto_element, new ArrayList<Conto>());
-        listViewConto.setAdapter(contoAdapter);
+        // list view
+        listViewCategorie = findViewById(R.id.list_view_categorie);
+        categorieAdapter = new CategorieAdapter(this, R.layout.list_view_categoria_element, new ArrayList<String>());
+        listViewCategorie.setAdapter(categorieAdapter);
 
         for (int i = 0; i<10; i++){
-            Conto test = new Conto("Lavoro", 2000f, null, "");
-            contoAdapter.add(test);
+            String test = "Prova";
+            categorieAdapter.add(test);
         }
-
-        listViewConto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Conto conto = (Conto) listViewConto.getItemAtPosition(i);
-                Intent intent = new Intent(HomeActivity.this, ContoActivity.class);
-                intent.putExtra("conto", conto);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void creaConto(View view) {
-        // apri fragment dialog per inserire input
-
     }
 
     @Override
@@ -104,9 +89,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId())
         {
             case R.id.home:
+                i = new Intent(CategorieActivity.this, HomeActivity.class);
+                startActivity(i);
                 break;
             case R.id.movimenti:
-                i = new Intent(HomeActivity.this, MovimentiActivity.class);
+                i = new Intent(CategorieActivity.this, MovimentiActivity.class);
                 startActivity(i);
                 break;
             case R.id.categorie:

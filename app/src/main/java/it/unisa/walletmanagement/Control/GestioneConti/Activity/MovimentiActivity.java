@@ -1,4 +1,4 @@
-package it.unisa.walletmanagement.Control.GestioneConti;
+package it.unisa.walletmanagement.Control.GestioneConti.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,33 +8,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import it.unisa.walletmanagement.Model.Entity.Conto;
+import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.MovimentoDialog;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class ContoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MovimentiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    MovimentoAdapter movimentoAdapter;
-    ListView listViewMovimenti;
-    TextView tvNomeConto, tvSaldoConto;
+    ListView listViewMovEntrate;
+    ListView listViewMovUscite;
+    MovimentoAdapter movimentoAdapterEntrate;
+    MovimentoAdapter movimentoAdapterUscite;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -44,9 +40,9 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nav_activity_conto);
+        setContentView(R.layout.nav_activity_movimenti);
 
-        // navigation drawer
+        // navigation drawer code
         drawerLayout = findViewById(R.id.drawer_view);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
@@ -57,34 +53,47 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // imposta le info specifiche del conto selezionato
-        // saldo totale: somma iniziale + somma di tutti i movimenti
-        Conto conto = (Conto) getIntent().getSerializableExtra("conto");
-        tvNomeConto = findViewById(R.id.text_view_nome_conto);
-        tvSaldoConto = findViewById(R.id.text_view_saldo_conto);
-        tvNomeConto.setText("CONTO: "+conto.getNome());
-
-        listViewMovimenti = findViewById(R.id.list_view_movimenti_conto);
-        movimentoAdapter = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
-        listViewMovimenti.setAdapter(movimentoAdapter);
-
+        // list view entrate
+        listViewMovEntrate = findViewById(R.id.list_view_movimenti_entrate);
+        movimentoAdapterEntrate = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
+        listViewMovEntrate.setAdapter(movimentoAdapterEntrate);
         for (int i = 0; i<10; i++){
-            Random random = new Random();
-            int x = random.nextInt(2);
-            Movimento test = new Movimento(1, "Prova", null, x, 1000, "Lavoro");
-            movimentoAdapter.add(test);
+            Movimento test = new Movimento(1, "Prova", null, 1, 1000, "Lavoro");
+            movimentoAdapterEntrate.add(test);
         }
 
-        listViewMovimenti.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // list view uscite
+        listViewMovUscite = findViewById(R.id.list_view_movimenti_uscite);
+        movimentoAdapterUscite = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
+        listViewMovUscite.setAdapter(movimentoAdapterUscite);
+        for (int i = 0; i<10; i++){
+            Movimento test = new Movimento(1, "Prova", null, 0, 1000, "Lavoro");
+            movimentoAdapterUscite.add(test);
+        }
+
+        listViewMovEntrate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
-                Movimento movimento = (Movimento) listViewMovimenti.getItemAtPosition(i);
+                Movimento movimento = (Movimento) listViewMovEntrate.getItemAtPosition(i);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movimento", movimento);
-                MovimentoFragment dialog = new MovimentoFragment();
+                MovimentoDialog dialog = new MovimentoDialog();
                 dialog.setArguments(bundle);
-                dialog.show(getFragmentManager(), "Movimento");
+                dialog.show(getSupportFragmentManager(), "Movimento");
+            }
+        });
+
+        listViewMovUscite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
+                Movimento movimento = (Movimento) listViewMovUscite.getItemAtPosition(i);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movimento", movimento);
+                MovimentoDialog dialog = new MovimentoDialog();
+                dialog.setArguments(bundle);
+                dialog.show(getSupportFragmentManager(), "Movimento");
             }
         });
     }
@@ -116,14 +125,14 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         switch(item.getItemId())
         {
             case R.id.home:
-                i = new Intent(ContoActivity.this, HomeActivity.class);
+                i = new Intent(MovimentiActivity.this, HomeActivity.class);
                 startActivity(i);
                 break;
             case R.id.movimenti:
-                i = new Intent(ContoActivity.this, MovimentiActivity.class);
-                startActivity(i);
                 break;
             case R.id.categorie:
+                i = new Intent(MovimentiActivity.this, CategorieActivity.class);
+                startActivity(i);
                 break;
             case R.id.calcolatrice:
                 break;

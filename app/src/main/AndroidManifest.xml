@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WalletManagement">
         <activity
-            android:name=".Control.GestioneConti.CategorieActivity"
+            android:name=".Control.GestioneConti.Activity.CategorieActivity"
             android:exported="true" />
         <activity
-            android:name=".Control.GestioneConti.MovimentiActivity"
+            android:name=".Control.GestioneConti.Activity.MovimentiActivity"
             android:exported="true" />
         <activity
-            android:name=".Control.GestioneConti.ContoActivity"
+            android:name=".Control.GestioneConti.Activity.ContoActivity"
             android:exported="true" />
         <activity
-            android:name=".Control.GestioneConti.HomeActivity"
+            android:name=".Control.GestioneConti.Activity.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,6 @@
-package it.unisa.walletmanagement.Control.GestioneConti;
+package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
 
-import android.app.DialogFragment;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -18,7 +18,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class MovimentoFragment extends DialogFragment {
+public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
 
     TextView tvCancel, tvOK;
     EditText etNome, etValore;
@@ -27,7 +27,14 @@ public class MovimentoFragment extends DialogFragment {
     String[] categorie;
     Button entrata, uscita;
 
-    public MovimentoFragment() {
+    // interfaccia usata per inviare dati all'activity
+    public interface MovimentoListener{
+        void sendMovimento(Movimento movimento);
+    }
+
+    public MovimentoListener movimentoListener;
+
+    public MovimentoDialog() {
         // Required empty public constructor
     }
 
@@ -129,10 +136,23 @@ public class MovimentoFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 // modifica i campi dell'oggetto movimento
+                // usa il listener per inviare l'input inserito
+                // dall'utente all'activity se necessario
+                // movimentoListener.sendMovimento(movimento);
                 getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            movimentoListener = (MovimentoListener) getActivity();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

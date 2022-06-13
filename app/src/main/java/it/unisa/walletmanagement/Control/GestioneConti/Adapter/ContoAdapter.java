@@ -1,4 +1,4 @@
-package it.unisa.walletmanagement.Control.GestioneConti;
+package it.unisa.walletmanagement.Control.GestioneConti.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
