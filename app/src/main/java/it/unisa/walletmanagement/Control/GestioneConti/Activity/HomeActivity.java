@@ -57,6 +57,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         contoAdapter = new ContoAdapter(this, R.layout.list_view_conto_element, new ArrayList<Conto>());
         listViewConto.setAdapter(contoAdapter);
 
+        // ToDo: popola il listView con la lista dei conti
+
         for (int i = 0; i<10; i++){
             Conto test = new Conto("Lavoro", 2000f, null, "");
             contoAdapter.add(test);
@@ -76,7 +78,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void creaConto(View view) {
         CreaContoDialog creaContoDialog = new CreaContoDialog();
         creaContoDialog.show(getSupportFragmentManager(), "Crea conto");
-
     }
 
     @Override

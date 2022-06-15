@@ -43,7 +43,7 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
             public void onClick(View view) {
                 MovimentoAdapter.this.remove(getItem(position));
                 MovimentoAdapter.this.notifyDataSetChanged();
-                // cancella movimento
+                // ToDo: cancella movimento
             }
         });
 

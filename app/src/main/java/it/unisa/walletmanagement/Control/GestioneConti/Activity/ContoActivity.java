@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoDialog;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.MovimentoDialog;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
@@ -55,8 +56,8 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // imposta le info specifiche del conto selezionato
-        // saldo totale: somma iniziale + somma di tutti i movimenti
+        // ToDo: imposta le info specifiche del conto selezionato
+        //  saldo totale: somma iniziale + somma di tutti i movimenti
         Conto conto = (Conto) getIntent().getSerializableExtra("conto");
         tvNomeConto = findViewById(R.id.text_view_nome_conto);
         tvSaldoConto = findViewById(R.id.text_view_saldo_conto);
@@ -65,6 +66,8 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         listViewMovimenti = findViewById(R.id.list_view_movimenti_conto);
         movimentoAdapter = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
         listViewMovimenti.setAdapter(movimentoAdapter);
+
+        // ToDo: popola il listView con la lista dei movimenti del conto
 
         for (int i = 0; i<10; i++){
             Random random = new Random();
@@ -85,6 +88,11 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
                 dialog.show(getSupportFragmentManager(), "Movimento");
             }
         });
+    }
+
+    public void creaMovimento(View view) {
+        CreaMovimentoDialog creaMovimentoDialog = new CreaMovimentoDialog();
+        creaMovimentoDialog.show(getSupportFragmentManager(), "Crea movimento");
     }
 
     @Override

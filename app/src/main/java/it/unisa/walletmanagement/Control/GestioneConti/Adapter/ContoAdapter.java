@@ -39,7 +39,7 @@ public class ContoAdapter extends ArrayAdapter<Conto> {
             public void onClick(View view) {
                 ContoAdapter.this.remove(getItem(position));
                 ContoAdapter.this.notifyDataSetChanged();
-                // cancella conto
+                // ToDo: cancella conto
             }
         });
 

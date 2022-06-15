@@ -16,12 +16,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.CategorieAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.ContoAdapter;
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaCategoriaDialog;
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoGenericoDialog;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
@@ -29,7 +32,7 @@ public class CategorieActivity extends AppCompatActivity implements NavigationVi
 
     ListView listViewCategorie;
     CategorieAdapter categorieAdapter;
-
+    FloatingActionButton floatingActionButton;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
@@ -50,6 +53,15 @@ public class CategorieActivity extends AppCompatActivity implements NavigationVi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        floatingActionButton = findViewById(R.id.fab_crea_categoria);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreaCategoriaDialog creaCategoriaDialog = new CreaCategoriaDialog();
+                creaCategoriaDialog.show(getSupportFragmentManager(), "Crea categoria");
+            }
+        });
 
         // list view
         listViewCategorie = findViewById(R.id.list_view_categorie);

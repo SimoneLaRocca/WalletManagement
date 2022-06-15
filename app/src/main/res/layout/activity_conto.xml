@@ -72,6 +72,7 @@
 
     <Button
         android:id="@+id/button_aggiungi_movimento_conto"
+        android:onClick="creaMovimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

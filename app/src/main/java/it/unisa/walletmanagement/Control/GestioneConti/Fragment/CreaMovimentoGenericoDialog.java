@@ -1,8 +1,11 @@
 package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,28 +16,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.core.graphics.drawable.DrawableCompat;
-
-import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
+public class CreaMovimentoGenericoDialog extends DialogFragment {
 
     TextView tvCancel, tvOK;
     EditText etNome, etValore;
-    Spinner dropdown;
-    ArrayAdapter<String> adapter;
+    Spinner dropdown_conto;
+    Spinner dropdown_categoria;
+    ArrayAdapter<String> adapter_categorie;
+    ArrayAdapter<String> adapter_conti;
     String[] categorie;
+    String[] conti;
     Button entrata, uscita;
 
-    // interfaccia usata per inviare dati all'activity
-    public interface MovimentoListener{
-        void sendMovimento(Movimento movimento);
-    }
-
-    public MovimentoListener movimentoListener;
-
-    public MovimentoDialog() {
+    public CreaMovimentoGenericoDialog() {
         // Required empty public constructor
     }
 
@@ -47,16 +43,20 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // Possibile riutilizzare il layout fragment_movimento, cambiando la text view iniziale
-        View view = inflater.inflate(R.layout.fragment_crea_movimento, container, false);
+        View view = inflater.inflate(R.layout.fragment_crea_movimento_generico, container, false);
 
-        Movimento movimento = (Movimento) this.getArguments().getSerializable("movimento");
+        dropdown_categoria = view.findViewById(R.id.spinner_categoria);
+        dropdown_conto = view.findViewById(R.id.spinner_conto);
 
-        dropdown = view.findViewById(R.id.spinner1);
         // ToDo: popolare con la lista delle categorie
         categorie = new String[]{"Lavoro", "Banca", "Spesa"};
-        adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie);
-        dropdown.setAdapter(adapter);
+        adapter_categorie = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie);
+        dropdown_categoria.setAdapter(adapter_categorie);
+
+        // ToDo: popolare con la lista dei conti
+        conti = new String[]{"Visa", "BancoPosta", "Mastercard"};
+        adapter_conti = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, conti);
+        dropdown_conto.setAdapter(adapter_conti);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);
         etValore = view.findViewById(R.id.edit_text_valore_movimento);
@@ -65,28 +65,8 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
         entrata = view.findViewById(R.id.button_entrata_movimento);
         uscita = view.findViewById(R.id.button_uscita_movimento);
 
-        // imposta i campi con i valori dell'item movimento selezionato
-        etNome.setText(movimento.getNome());
-        etValore.setText("" + movimento.getValore());
-        // imposta categoria
-        int spinner_position = adapter.getPosition(movimento.getCategoria());
-        dropdown.setSelection(spinner_position);
-
-        if(movimento.getTipo() == 0){
-            Drawable buttonDrawable = uscita.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, 0xFFFF0000);
-            uscita.setBackground(buttonDrawable);
-            uscita.setTag(true);
-            entrata.setTag(false);
-        }else {
-            Drawable buttonDrawable = entrata.getBackground();
-            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-            DrawableCompat.setTint(buttonDrawable, 0xFF4CAF50);
-            entrata.setBackground(buttonDrawable);
-            entrata.setTag(true);
-            uscita.setTag(false);
-        }
+        entrata.setTag(false);
+        uscita.setTag(false);
 
         uscita.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,24 +116,11 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ToDO: modifica i campi dell'oggetto movimento,
-                //  usa il listener per inviare l'input inserito
-                //  dall'utente all'activity se necessario
-                // movimentoListener.sendMovimento(movimento);
+                // ToDo: crea il movimento o restituisci l'input all'activity
                 getDialog().dismiss();
             }
         });
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            movimentoListener = (MovimentoListener) getActivity();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
     }
 }

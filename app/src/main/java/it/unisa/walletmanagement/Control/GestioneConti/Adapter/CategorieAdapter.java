@@ -38,7 +38,7 @@ public class CategorieAdapter extends ArrayAdapter<String> {
             public void onClick(View view) {
                 CategorieAdapter.this.remove(getItem(position));
                 CategorieAdapter.this.notifyDataSetChanged();
-                // cancella categoria
+                // ToDo: cancella categoria
             }
         });
 
