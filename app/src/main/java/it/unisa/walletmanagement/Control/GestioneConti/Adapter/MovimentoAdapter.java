@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import it.unisa.walletmanagement.Model.Entity.Movimento;
@@ -37,6 +38,7 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
         TextView tvNome = convertView.findViewById(R.id.text_view_nome_movimento);
         TextView tvCategoria = convertView.findViewById(R.id.text_view_categoria_movimento);
         TextView tvValore = convertView.findViewById(R.id.text_view_valore_movimento);
+        TextView tvData = convertView.findViewById(R.id.text_view_data_movimento);
         ImageView ivCancella = convertView.findViewById(R.id.image_view_cancella_movimento);
         ivCancella.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +55,12 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
             flColor.setBackgroundColor(0xFF4CAF50);
         }
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         tvNome.setText(movimento.getNome());
         tvCategoria.setText(movimento.getCategoria());
         tvValore.setText("€ "+Float.toString(movimento.getValore()));
+        tvData.setText(simpleDateFormat.format(movimento.getData().getTime()));
 
         return convertView;
     }

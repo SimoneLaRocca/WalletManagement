@@ -76,6 +76,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void creaConto(View view) {
+        // ToDo: aggiungi il conto all'adapter del listView
+        // metodo: adapter.notifyDataSetChanged()
         CreaContoDialog creaContoDialog = new CreaContoDialog();
         creaContoDialog.show(getSupportFragmentManager(), "Crea conto");
     }

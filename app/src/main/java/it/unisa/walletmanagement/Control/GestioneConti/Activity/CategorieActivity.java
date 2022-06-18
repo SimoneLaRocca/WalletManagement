@@ -58,6 +58,7 @@ public class CategorieActivity extends AppCompatActivity implements NavigationVi
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // ToDo: aggiungi la categoria all'adapter del listView
                 CreaCategoriaDialog creaCategoriaDialog = new CreaCategoriaDialog();
                 creaCategoriaDialog.show(getSupportFragmentManager(), "Crea categoria");
             }

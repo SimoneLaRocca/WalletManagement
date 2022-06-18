@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Random;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
@@ -68,11 +69,10 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         listViewMovimenti.setAdapter(movimentoAdapter);
 
         // ToDo: popola il listView con la lista dei movimenti del conto
-
         for (int i = 0; i<10; i++){
             Random random = new Random();
             int x = random.nextInt(2);
-            Movimento test = new Movimento(1, "Prova", null, x, 1000, "Lavoro");
+            Movimento test = new Movimento(1, "Prova", new GregorianCalendar(), x, 1000, "Lavoro");
             movimentoAdapter.add(test);
         }
 
@@ -91,6 +91,7 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void creaMovimento(View view) {
+        // ToDo: aggiungi il movimento all'adapter del listView
         CreaMovimentoDialog creaMovimentoDialog = new CreaMovimentoDialog();
         creaMovimentoDialog.show(getSupportFragmentManager(), "Crea movimento");
     }

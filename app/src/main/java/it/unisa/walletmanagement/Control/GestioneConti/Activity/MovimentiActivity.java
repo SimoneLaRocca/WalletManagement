@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoGenericoDialog;
@@ -59,7 +60,7 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
         movimentoAdapterEntrate = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
         listViewMovEntrate.setAdapter(movimentoAdapterEntrate);
         for (int i = 0; i<10; i++){
-            Movimento test = new Movimento(1, "Prova", null, 1, 1000, "Lavoro");
+            Movimento test = new Movimento(1, "Prova", new GregorianCalendar(), 1, 1000, "Lavoro");
             movimentoAdapterEntrate.add(test);
         }
 
@@ -68,7 +69,7 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
         movimentoAdapterUscite = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
         listViewMovUscite.setAdapter(movimentoAdapterUscite);
         for (int i = 0; i<10; i++){
-            Movimento test = new Movimento(1, "Prova", null, 0, 1000, "Lavoro");
+            Movimento test = new Movimento(1, "Prova", new GregorianCalendar(), 0, 1000, "Lavoro");
             movimentoAdapterUscite.add(test);
         }
 
@@ -100,6 +101,7 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
     }
 
     public void creaMovimentoGenerico(View view) {
+        // ToDo: aggiungi il movimento all'adapter del listView
         CreaMovimentoGenericoDialog creaMovimentoGenericoDialog = new CreaMovimentoGenericoDialog();
         creaMovimentoGenericoDialog.show(getSupportFragmentManager(), "Crea movimento generico");
     }
