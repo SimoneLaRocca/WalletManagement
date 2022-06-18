@@ -21,7 +21,7 @@ import it.unisa.walletmanagement.R;
 public class CreaMovimentoDialog extends DialogFragment {
 
     TextView tvCancel, tvOK;
-    EditText etNome, etValore;
+    EditText etNome, etImporto;
     Spinner dropdown;
     ArrayAdapter<String> adapter;
     String[] categorie;
@@ -49,7 +49,7 @@ public class CreaMovimentoDialog extends DialogFragment {
         dropdown.setAdapter(adapter);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);
-        etValore = view.findViewById(R.id.edit_text_valore_movimento);
+        etImporto = view.findViewById(R.id.edit_text_importo_movimento);
         tvCancel = view.findViewById(R.id.tv_cancel);
         tvOK = view.findViewById(R.id.tv_ok);
         entrata = view.findViewById(R.id.button_entrata_movimento);

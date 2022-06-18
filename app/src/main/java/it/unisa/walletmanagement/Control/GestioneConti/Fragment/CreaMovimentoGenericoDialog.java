@@ -21,7 +21,7 @@ import it.unisa.walletmanagement.R;
 public class CreaMovimentoGenericoDialog extends DialogFragment {
 
     TextView tvCancel, tvOK;
-    EditText etNome, etValore;
+    EditText etNome, etImporto;
     Spinner dropdown_conto;
     Spinner dropdown_categoria;
     ArrayAdapter<String> adapter_categorie;
@@ -59,7 +59,7 @@ public class CreaMovimentoGenericoDialog extends DialogFragment {
         dropdown_conto.setAdapter(adapter_conti);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);
-        etValore = view.findViewById(R.id.edit_text_valore_movimento);
+        etImporto = view.findViewById(R.id.edit_text_importo_movimento);
         tvCancel = view.findViewById(R.id.tv_cancel);
         tvOK = view.findViewById(R.id.tv_ok);
         entrata = view.findViewById(R.id.button_entrata_movimento);

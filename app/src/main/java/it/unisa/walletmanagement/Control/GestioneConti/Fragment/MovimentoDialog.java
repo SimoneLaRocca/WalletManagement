@@ -21,7 +21,7 @@ import it.unisa.walletmanagement.R;
 public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
 
     TextView tvCancel, tvOK;
-    EditText etNome, etValore;
+    EditText etNome, etImporto;
     Spinner dropdown;
     ArrayAdapter<String> adapter;
     String[] categorie;
@@ -59,7 +59,7 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
         dropdown.setAdapter(adapter);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);
-        etValore = view.findViewById(R.id.edit_text_valore_movimento);
+        etImporto = view.findViewById(R.id.edit_text_importo_movimento);
         tvCancel = view.findViewById(R.id.tv_cancel);
         tvOK = view.findViewById(R.id.tv_ok);
         entrata = view.findViewById(R.id.button_entrata_movimento);
@@ -67,7 +67,7 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
 
         // imposta i campi con i valori dell'item movimento selezionato
         etNome.setText(movimento.getNome());
-        etValore.setText("" + movimento.getValore());
+        etImporto.setText("" + movimento.getImporto());
         // imposta categoria
         int spinner_position = adapter.getPosition(movimento.getCategoria());
         dropdown.setSelection(spinner_position);

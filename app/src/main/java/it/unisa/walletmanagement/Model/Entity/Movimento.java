@@ -8,15 +8,15 @@ public class Movimento implements Serializable {
     private String nome;
     private GregorianCalendar data;
     private int tipo; // 0: uscita , 1: entrata
-    private float valore;
+    private float importo;
     private String categoria;
 
-    public Movimento(int id, String nome, GregorianCalendar data, int tipo, float valore, String categoria) {
+    public Movimento(int id, String nome, GregorianCalendar data, int tipo, float importo, String categoria) {
         this.id = id;
         this.nome = nome;
         this.data = data;
         this.tipo = tipo;
-        this.valore = valore;
+        this.importo = importo;
         this.categoria = categoria;
     }
 
@@ -52,12 +52,12 @@ public class Movimento implements Serializable {
         this.tipo = tipo;
     }
 
-    public float getValore() {
-        return valore;
+    public float getImporto() {
+        return importo;
     }
 
-    public void setValore(float valore) {
-        this.valore = valore;
+    public void setImporto(float importo) {
+        this.importo = importo;
     }
 
     public String getCategoria() {

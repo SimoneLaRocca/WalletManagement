@@ -2,6 +2,7 @@ package it.unisa.walletmanagement.Model.Entity;
 
 import java.util.List;
 
+// Non usata
 public class Utente {
     private String nome;
     private String cognome;

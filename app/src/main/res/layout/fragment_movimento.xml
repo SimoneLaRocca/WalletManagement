@@ -60,17 +60,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="Valore"
+                    android:text="Importo"
                     android:textColor="@color/black" />
 
                 <EditText
-                    android:id="@+id/edit_text_valore_movimento"
+                    android:id="@+id/edit_text_importo_movimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:background="@drawable/border"
                     android:padding="2dp"
-                    android:text="valore"
+                    android:text="importo"
                     android:textColor="@color/black" />
             </LinearLayout>
 
