@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -22,15 +24,20 @@ import java.util.ArrayList;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.ContoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaContoDialog;
+import it.unisa.walletmanagement.Model.Dao.ContoDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
 // Activity home usata per visualizzare la lista completa
 // dei conti dell'utente
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CreaContoDialog.ContoListener {
 
     ContoAdapter contoAdapter;
     ListView listViewConto;
+    ArrayList<Conto> lista_conti;
+    ContoDAO contoDAO;
+
+    TextView tvNessunConto;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -57,11 +64,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         contoAdapter = new ContoAdapter(this, R.layout.list_view_conto_element, new ArrayList<Conto>());
         listViewConto.setAdapter(contoAdapter);
 
-        // ToDo: popola il listView con la lista dei conti
+        tvNessunConto = findViewById(R.id.text_view_nessun_conto);
 
-        for (int i = 0; i<10; i++){
-            Conto test = new Conto("Lavoro", 2000f, null, "");
-            contoAdapter.add(test);
+        contoDAO = new ContoDAO(getApplicationContext());
+        lista_conti = (ArrayList<Conto>) contoDAO.doRetrieveAll();
+        if(lista_conti != null){
+            tvNessunConto.setVisibility(View.INVISIBLE);
+            listViewConto.setVisibility(View.VISIBLE);
+            for(Conto conto : lista_conti){
+                contoAdapter.add(conto);
+            }
+        }else {
+            tvNessunConto.setVisibility(View.VISIBLE);
+            listViewConto.setVisibility(View.INVISIBLE);
         }
 
         listViewConto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,10 +91,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void creaConto(View view) {
-        // ToDo: aggiungi il conto all'adapter del listView
-        // metodo: adapter.notifyDataSetChanged()
         CreaContoDialog creaContoDialog = new CreaContoDialog();
         creaContoDialog.show(getSupportFragmentManager(), "Crea conto");
+    }
+
+    @Override
+    public void sendConto(Conto conto) {
+        tvNessunConto.setVisibility(View.INVISIBLE);
+        listViewConto.setVisibility(View.VISIBLE);
+        contoDAO.insertConto(conto.getNome(), conto.getSaldo());
+        contoAdapter.add(conto);
+        contoAdapter.notifyDataSetChanged();
     }
 
     @Override

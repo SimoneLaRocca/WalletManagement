@@ -7,13 +7,14 @@ public class Conto implements Serializable {
     private String nome;
     private float saldo;
     private List<Movimento> movimenti;
-    private String descrizione;
 
-    public Conto(String nome, float saldo, List<Movimento> movimenti, String descrizione) {
+    public Conto() {
+    }
+
+    public Conto(String nome, float saldo, List<Movimento> movimenti) {
         this.nome = nome;
         this.saldo = saldo;
         this.movimenti = movimenti;
-        this.descrizione = descrizione;
     }
 
     public String getNome() {
@@ -38,14 +39,6 @@ public class Conto implements Serializable {
 
     public void setMovimenti(List<Movimento> movimenti) {
         this.movimenti = movimenti;
-    }
-
-    public String getDescrizione() {
-        return descrizione;
-    }
-
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
     }
 
     public List<Movimento> searchMovimento(){

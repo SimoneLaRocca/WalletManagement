@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="280dp"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@drawable/border_red_209">
 
     <RelativeLayout
         android:layout_width="match_parent"

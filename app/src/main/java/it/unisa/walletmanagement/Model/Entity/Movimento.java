@@ -4,14 +4,17 @@ import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 public class Movimento implements Serializable {
-    private int id;
+    private int id; // id < 0: movimento non memorizzato nel db
     private String nome;
-    private GregorianCalendar data;
-    private int tipo; // 0: uscita , 1: entrata
     private float importo;
+    private int tipo; // 0 = uscita , 1 = entrata
+    private GregorianCalendar data;
     private String categoria;
 
-    public Movimento(int id, String nome, GregorianCalendar data, int tipo, float importo, String categoria) {
+    public Movimento() {
+    }
+
+    public Movimento(int id, String nome, float importo, int tipo, GregorianCalendar data, String categoria) {
         this.id = id;
         this.nome = nome;
         this.data = data;

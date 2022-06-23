@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import java.util.GregorianCalendar;
+
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
+public class ModificaMovimentoDialog extends androidx.fragment.app.DialogFragment {
 
     TextView tvCancel, tvOK;
     EditText etNome, etImporto;
@@ -26,15 +28,16 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
     ArrayAdapter<String> adapter;
     String[] categorie;
     Button entrata, uscita;
+    Movimento movimento;
 
     // interfaccia usata per inviare dati all'activity
     public interface MovimentoListener{
-        void sendMovimento(Movimento movimento);
+        void sendUpdatedMovimento(Movimento oldMovimento, Movimento newMovimento);
     }
 
     public MovimentoListener movimentoListener;
 
-    public MovimentoDialog() {
+    public ModificaMovimentoDialog() {
         // Required empty public constructor
     }
 
@@ -48,9 +51,9 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // Possibile riutilizzare il layout fragment_movimento, cambiando la text view iniziale
-        View view = inflater.inflate(R.layout.fragment_crea_movimento, container, false);
+        View view = inflater.inflate(R.layout.fragment_modifica_movimento, container, false);
 
-        Movimento movimento = (Movimento) this.getArguments().getSerializable("movimento");
+        movimento = (Movimento) this.getArguments().getSerializable("movimento");
 
         dropdown = view.findViewById(R.id.spinner1);
         // ToDo: popolare con la lista delle categorie
@@ -136,10 +139,18 @@ public class MovimentoDialog extends androidx.fragment.app.DialogFragment {
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ToDO: modifica i campi dell'oggetto movimento,
-                //  usa il listener per inviare l'input inserito
-                //  dall'utente all'activity se necessario
-                // movimentoListener.sendMovimento(movimento);
+                Movimento newMovimento = new Movimento();
+                newMovimento.setId(movimento.getId());
+                newMovimento.setNome(etNome.getText().toString());
+                newMovimento.setImporto(Float.parseFloat(etImporto.getText().toString()));
+                newMovimento.setCategoria((String) dropdown.getSelectedItem());
+                newMovimento.setData(movimento.getData());
+                if(entrata.getTag().equals(true)){
+                    newMovimento.setTipo(1);
+                }else {
+                    newMovimento.setTipo(0);
+                }
+                movimentoListener.sendUpdatedMovimento(movimento, newMovimento);
                 getDialog().dismiss();
             }
         });

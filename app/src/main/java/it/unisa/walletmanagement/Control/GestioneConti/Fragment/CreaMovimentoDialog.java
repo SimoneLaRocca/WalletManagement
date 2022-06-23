@@ -1,8 +1,10 @@
 package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.GregorianCalendar;
+
+import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
 public class CreaMovimentoDialog extends DialogFragment {
@@ -26,6 +31,12 @@ public class CreaMovimentoDialog extends DialogFragment {
     ArrayAdapter<String> adapter;
     String[] categorie;
     Button entrata, uscita;
+
+    public interface CreaMovimentoListener{
+        void sendNewMovimento(Movimento movimento);
+    }
+
+    public CreaMovimentoListener creaMovimentoListener;
 
     public CreaMovimentoDialog() {
         // Required empty public constructor
@@ -40,7 +51,7 @@ public class CreaMovimentoDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movimento, container, false);
+        View view = inflater.inflate(R.layout.fragment_crea_movimento, container, false);
 
         dropdown = view.findViewById(R.id.spinner1);
         // ToDo: popolare con la lista delle categorie
@@ -106,11 +117,31 @@ public class CreaMovimentoDialog extends DialogFragment {
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ToDo: crea il movimento o restituisci l'input all'activity
+                Movimento m = new Movimento();
+                m.setNome(etNome.getText().toString());
+                m.setImporto(Float.parseFloat(etImporto.getText().toString()));
+                m.setCategoria((String) dropdown.getSelectedItem());
+                m.setData(new GregorianCalendar());
+                if(entrata.getTag().equals(true)){
+                    m.setTipo(1);
+                }else {
+                    m.setTipo(0);
+                }
+                creaMovimentoListener.sendNewMovimento(m);
                 getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            creaMovimentoListener = (CreaMovimentoListener) getActivity();
+        }catch (ClassCastException e){
+            e.printStackTrace();
+        }
     }
 }

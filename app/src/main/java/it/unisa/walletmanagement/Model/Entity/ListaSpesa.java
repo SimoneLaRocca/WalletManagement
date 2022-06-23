@@ -1,22 +1,16 @@
 package it.unisa.walletmanagement.Model.Entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ListaSpesa {
-    private int id;
+public class ListaSpesa implements Serializable {
     private List<String> lista;
 
-    public ListaSpesa(int id, List<String> lista) {
-        this.id = id;
+    public ListaSpesa(List<String> lista) {
         this.lista = lista;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public ListaSpesa() {
     }
 
     public List<String> getLista() {

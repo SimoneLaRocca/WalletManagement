@@ -6,13 +6,20 @@
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/border.xml" value="0.12037037037037036" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/border_red_209.xml" value="0.2972222222222222" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_circle.xml" value="0.2861111111111111" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_crea.xml" value="0.2861111111111111" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_crea_conto.xml" value="0.2671875" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_crea_conto3.xml" value="0.2671875" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_crea_conto4.xml" value="0.2671875" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_delete.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_lista_spesa.xml" value="0.2733333333333333" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/drawable/ic_movimenti.xml" value="0.3" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_categorie.xml" value="0.24003623188405798" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_conto.xml" value="0.22418478260869565" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_home.xml" value="0.17328519855595667" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_movimenti.xml" value="0.1" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/custom_toast.xml" value="0.25815217391304346" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_crea_categoria.xml" value="0.25181159420289856" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_crea_conto.xml" value="0.23097826086956522" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_crea_movimento.xml" value="0.2259963768115942" />

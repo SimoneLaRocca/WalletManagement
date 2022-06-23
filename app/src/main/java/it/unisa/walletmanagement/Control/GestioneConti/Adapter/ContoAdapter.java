@@ -13,14 +13,19 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import it.unisa.walletmanagement.Model.Dao.ContoDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
-// Activity usata per visulizzare una lista dei movimenti
+// Activity usata per visualizzare una lista dei movimenti
 // di uno specifico conto dell'utente
 public class ContoAdapter extends ArrayAdapter<Conto> {
+
+    private Context context;
+
     public ContoAdapter(@NonNull Context context, int resource, @NonNull List<Conto> objects) {
         super(context, resource, objects);
+        this.context = context;
     }
 
     @NonNull
@@ -37,9 +42,11 @@ public class ContoAdapter extends ArrayAdapter<Conto> {
         ivCancella.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContoAdapter.this.remove(getItem(position));
+                Conto c = getItem(position);
+                ContoDAO contoDAO = new ContoDAO(context);
+                contoDAO.deleteConto(c.getNome());
+                ContoAdapter.this.remove(c);
                 ContoAdapter.this.notifyDataSetChanged();
-                // ToDo: cancella conto
             }
         });
 

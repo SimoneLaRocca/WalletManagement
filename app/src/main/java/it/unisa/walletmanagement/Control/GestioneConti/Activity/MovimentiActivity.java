@@ -11,10 +11,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,16 +25,21 @@ import java.util.GregorianCalendar;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoGenericoDialog;
-import it.unisa.walletmanagement.Control.GestioneConti.Fragment.MovimentoDialog;
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.ModificaMovimentoDialog;
+import it.unisa.walletmanagement.Model.Dao.ContoDAO;
+import it.unisa.walletmanagement.Model.Dao.MovimentoDAO;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class MovimentiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MovimentiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModificaMovimentoDialog.MovimentoListener, CreaMovimentoGenericoDialog.CreaMovimentoGenericoListener {
 
     ListView listViewMovEntrate;
     ListView listViewMovUscite;
     MovimentoAdapter movimentoAdapterEntrate;
     MovimentoAdapter movimentoAdapterUscite;
+    ArrayList<Movimento> lista_entrate;
+    ArrayList<Movimento> lista_uscite;
+    MovimentoDAO movimentoDAO;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -55,22 +62,27 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // ToDo: popola il listView con la lista dei movimenti in entrata
         listViewMovEntrate = findViewById(R.id.list_view_movimenti_entrate);
         movimentoAdapterEntrate = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
         listViewMovEntrate.setAdapter(movimentoAdapterEntrate);
-        for (int i = 0; i<10; i++){
-            Movimento test = new Movimento(1, "Prova", new GregorianCalendar(), 1, 1000, "Lavoro");
-            movimentoAdapterEntrate.add(test);
+
+        movimentoDAO = new MovimentoDAO(getApplicationContext());
+        lista_entrate = (ArrayList<Movimento>) movimentoDAO.doRetrieveByType(1);
+        if(lista_entrate != null){
+            for(Movimento m : lista_entrate){
+                movimentoAdapterEntrate.add(m);
+            }
         }
 
-        // ToDo: popola il listView con la lista dei movimenti in uscita
         listViewMovUscite = findViewById(R.id.list_view_movimenti_uscite);
         movimentoAdapterUscite = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
         listViewMovUscite.setAdapter(movimentoAdapterUscite);
-        for (int i = 0; i<10; i++){
-            Movimento test = new Movimento(1, "Prova", new GregorianCalendar(), 0, 1000, "Lavoro");
-            movimentoAdapterUscite.add(test);
+
+        lista_uscite = (ArrayList<Movimento>) movimentoDAO.doRetrieveByType(0);
+        if(lista_uscite != null){
+            for(Movimento m : lista_uscite){
+                movimentoAdapterUscite.add(m);
+            }
         }
 
         listViewMovEntrate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,7 +92,7 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
                 Movimento movimento = (Movimento) listViewMovEntrate.getItemAtPosition(i);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movimento", movimento);
-                MovimentoDialog dialog = new MovimentoDialog();
+                ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
                 dialog.setArguments(bundle);
                 dialog.show(getSupportFragmentManager(), "Movimento");
             }
@@ -93,7 +105,7 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
                 Movimento movimento = (Movimento) listViewMovUscite.getItemAtPosition(i);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movimento", movimento);
-                MovimentoDialog dialog = new MovimentoDialog();
+                ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
                 dialog.setArguments(bundle);
                 dialog.show(getSupportFragmentManager(), "Movimento");
             }
@@ -101,9 +113,53 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
     }
 
     public void creaMovimentoGenerico(View view) {
-        // ToDo: aggiungi il movimento all'adapter del listView
-        CreaMovimentoGenericoDialog creaMovimentoGenericoDialog = new CreaMovimentoGenericoDialog();
-        creaMovimentoGenericoDialog.show(getSupportFragmentManager(), "Crea movimento generico");
+        // ToDo: mostra toast customizzato: per aggiungere movimenti devi prima creare un conto
+        //  crea metodo: ContoDAO.doCountConto()
+        ContoDAO contoDAO = new ContoDAO(getApplicationContext());
+        if(contoDAO.doRetrieveAll() == null){
+            showToastCustomizzato();
+        }else {
+            CreaMovimentoGenericoDialog creaMovimentoGenericoDialog = new CreaMovimentoGenericoDialog();
+            creaMovimentoGenericoDialog.show(getSupportFragmentManager(), "Crea movimento generico");
+        }
+    }
+
+    @Override
+    public void sendUpdatedMovimento(Movimento oldMovimento, Movimento newMovimento) {
+        if(oldMovimento.getTipo() == 1)
+            movimentoAdapterEntrate.remove(oldMovimento);
+        else
+            movimentoAdapterUscite.remove(oldMovimento);
+
+        if(newMovimento.getTipo() == 1){
+            movimentoDAO.updateMovimento(newMovimento);
+            movimentoAdapterEntrate.add(newMovimento);
+            movimentoAdapterEntrate.notifyDataSetChanged();
+        }else {
+            movimentoDAO.updateMovimento(newMovimento);
+            movimentoAdapterUscite.add(newMovimento);
+            movimentoAdapterUscite.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void sendNewMovimentoGenerico(Movimento movimento, String nome_conto) {
+        movimentoDAO.insertMovimento(movimento, nome_conto);
+        if(movimento.getTipo() == 1){
+            movimentoAdapterEntrate.add(movimento);
+            movimentoAdapterEntrate.notifyDataSetChanged();
+        }else {
+            movimentoAdapterUscite.add(movimento);
+            movimentoAdapterUscite.notifyDataSetChanged();
+        }
+    }
+
+    public void showToastCustomizzato() {
+        Toast toast = new Toast(getApplicationContext());
+        toast.setView(getLayoutInflater().inflate(R.layout.custom_toast, null));
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
@@ -155,4 +211,6 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
         }
         return true;
     }
+
+
 }

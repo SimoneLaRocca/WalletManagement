@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import it.unisa.walletmanagement.Model.Dao.MovimentoDAO;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
@@ -22,8 +23,11 @@ import it.unisa.walletmanagement.R;
 // movimento della lista dei movimenti di uno specifico conto
 public class MovimentoAdapter extends ArrayAdapter<Movimento> {
 
+    private Context context;
+
     public MovimentoAdapter(@NonNull Context context, int resource, @NonNull List<Movimento> objects) {
         super(context, resource, objects);
+        this.context = context;
     }
 
     @NonNull
@@ -43,9 +47,11 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
         ivCancella.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Movimento m = getItem(position);
+                MovimentoDAO movimentoDAO = new MovimentoDAO(context);
+                movimentoDAO.deleteMovimento(m.getId());
                 MovimentoAdapter.this.remove(getItem(position));
                 MovimentoAdapter.this.notifyDataSetChanged();
-                // ToDo: cancella movimento
             }
         });
 

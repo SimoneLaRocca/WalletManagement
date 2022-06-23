@@ -1,7 +1,9 @@
 package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import android.view.LayoutInflater;
@@ -10,12 +12,19 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
 public class CreaContoDialog extends DialogFragment {
 
     TextView tvCancel, tvOK;
     EditText etNome, etSaldo;
+
+    public interface ContoListener{
+        void sendConto(Conto conto);
+    }
+
+    public ContoListener contoListener;
 
     public CreaContoDialog() {
         // Required empty public constructor
@@ -48,10 +57,25 @@ public class CreaContoDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 // crea il conto o restituisci l'input all'activity
+                Conto c = new Conto();
+                c.setNome(etNome.getText().toString());
+                c.setSaldo(Float.parseFloat(etSaldo.getText().toString()));
+                c.setMovimenti(null);
+                contoListener.sendConto(c);
                 getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            contoListener = (ContoListener) getActivity();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

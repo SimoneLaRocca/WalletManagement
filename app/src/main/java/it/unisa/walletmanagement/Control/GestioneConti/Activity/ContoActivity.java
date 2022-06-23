@@ -20,20 +20,24 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Random;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoDialog;
-import it.unisa.walletmanagement.Control.GestioneConti.Fragment.MovimentoDialog;
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.ModificaMovimentoDialog;
+import it.unisa.walletmanagement.Model.Dao.ContoDAO;
+import it.unisa.walletmanagement.Model.Dao.MovimentoDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class ContoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MovimentoDialog.MovimentoListener {
+public class ContoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModificaMovimentoDialog.MovimentoListener, CreaMovimentoDialog.CreaMovimentoListener {
 
     MovimentoAdapter movimentoAdapter;
     ListView listViewMovimenti;
+    Conto conto;
+    ContoDAO contoDAO;
+    MovimentoDAO movimentoDAO;
+
     TextView tvNomeConto, tvSaldoConto;
 
     DrawerLayout drawerLayout;
@@ -59,7 +63,7 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
 
         // ToDo: imposta le info specifiche del conto selezionato
         //  saldo totale: somma iniziale + somma di tutti i movimenti
-        Conto conto = (Conto) getIntent().getSerializableExtra("conto");
+        conto = (Conto) getIntent().getSerializableExtra("conto");
         tvNomeConto = findViewById(R.id.text_view_nome_conto);
         tvSaldoConto = findViewById(R.id.text_view_saldo_conto);
         tvNomeConto.setText("CONTO: "+conto.getNome());
@@ -68,12 +72,13 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         movimentoAdapter = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
         listViewMovimenti.setAdapter(movimentoAdapter);
 
-        // ToDo: popola il listView con la lista dei movimenti del conto
-        for (int i = 0; i<10; i++){
-            Random random = new Random();
-            int x = random.nextInt(2);
-            Movimento test = new Movimento(1, "Prova", new GregorianCalendar(), x, 1000, "Lavoro");
-            movimentoAdapter.add(test);
+        contoDAO = new ContoDAO(getApplicationContext());
+        movimentoDAO = new MovimentoDAO(getApplicationContext());
+        Conto conto2 = contoDAO.doRetrieveByName(conto.getNome());
+        if(conto2 != null) {
+            for (Movimento movimento : conto2.getMovimenti()) {
+                movimentoAdapter.add(movimento);
+            }
         }
 
         listViewMovimenti.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,7 +88,7 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
                 Movimento movimento = (Movimento) listViewMovimenti.getItemAtPosition(i);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movimento", movimento);
-                MovimentoDialog dialog = new MovimentoDialog();
+                ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
                 dialog.setArguments(bundle);
                 dialog.show(getSupportFragmentManager(), "Movimento");
             }
@@ -91,9 +96,23 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void creaMovimento(View view) {
-        // ToDo: aggiungi il movimento all'adapter del listView
         CreaMovimentoDialog creaMovimentoDialog = new CreaMovimentoDialog();
         creaMovimentoDialog.show(getSupportFragmentManager(), "Crea movimento");
+    }
+
+    @Override
+    public void sendUpdatedMovimento(Movimento oldMovimento, Movimento newMovimento) {
+        movimentoAdapter.remove(oldMovimento);
+        movimentoDAO.updateMovimento(newMovimento);
+        movimentoAdapter.add(newMovimento);
+        movimentoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void sendNewMovimento(Movimento movimento) {
+        movimentoDAO.insertMovimento(movimento, conto.getNome());
+        movimentoAdapter.add(movimento);
+        movimentoAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -148,8 +167,4 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
-    @Override
-    public void sendMovimento(Movimento movimento) {
-        // listener MovimentoFragment
-    }
 }

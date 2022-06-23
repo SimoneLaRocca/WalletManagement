@@ -1,11 +1,12 @@
 package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+import it.unisa.walletmanagement.Model.Dao.ContoDAO;
+import it.unisa.walletmanagement.Model.Entity.Conto;
+import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
 public class CreaMovimentoGenericoDialog extends DialogFragment {
@@ -27,8 +34,14 @@ public class CreaMovimentoGenericoDialog extends DialogFragment {
     ArrayAdapter<String> adapter_categorie;
     ArrayAdapter<String> adapter_conti;
     String[] categorie;
-    String[] conti;
+    ArrayList<String> lista_nomi_conti;
     Button entrata, uscita;
+
+    public interface CreaMovimentoGenericoListener{
+        void sendNewMovimentoGenerico(Movimento movimento, String nome_conto);
+    }
+
+    public CreaMovimentoGenericoListener creaMovimentoGenericoListener;
 
     public CreaMovimentoGenericoDialog() {
         // Required empty public constructor
@@ -53,9 +66,14 @@ public class CreaMovimentoGenericoDialog extends DialogFragment {
         adapter_categorie = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie);
         dropdown_categoria.setAdapter(adapter_categorie);
 
-        // ToDo: popolare con la lista dei conti
-        conti = new String[]{"Visa", "BancoPosta", "Mastercard"};
-        adapter_conti = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, conti);
+        // getActivity().getApplicationContext() o getContext()
+        ContoDAO contoDAO = new ContoDAO(getActivity().getApplicationContext());
+        ArrayList<Conto> lista_conti = (ArrayList<Conto>) contoDAO.doRetrieveAll();
+        lista_nomi_conti = new ArrayList<>();
+        for(Conto c: lista_conti){
+            lista_nomi_conti.add(c.getNome());
+        }
+        adapter_conti = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, lista_nomi_conti);
         dropdown_conto.setAdapter(adapter_conti);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);
@@ -117,10 +135,32 @@ public class CreaMovimentoGenericoDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 // ToDo: crea il movimento o restituisci l'input all'activity
+                Movimento m = new Movimento();
+                m.setNome(etNome.getText().toString());
+                m.setImporto(Float.parseFloat(etImporto.getText().toString()));
+                m.setCategoria((String) dropdown_categoria.getSelectedItem());
+                m.setData(new GregorianCalendar());
+                String nome_conto = (String) dropdown_conto.getSelectedItem();
+                if(entrata.getTag().equals(true)){
+                    m.setTipo(1);
+                }else {
+                    m.setTipo(0);
+                }
+                creaMovimentoGenericoListener.sendNewMovimentoGenerico(m, nome_conto);
                 getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            creaMovimentoGenericoListener = (CreaMovimentoGenericoListener) getActivity();
+        }catch (ClassCastException e){
+            e.printStackTrace();
+        }
     }
 }
