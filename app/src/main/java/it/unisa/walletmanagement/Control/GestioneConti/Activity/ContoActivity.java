@@ -64,6 +64,7 @@ public class ContoActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+
         // Imposta le info specifiche del conto selezionato
         // saldo totale: somma iniziale + somma di tutti i movimenti
         conto = (Conto) getIntent().getSerializableExtra("conto");
