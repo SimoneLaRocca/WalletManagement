@@ -30,7 +30,10 @@ import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class ContoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModificaMovimentoDialog.MovimentoListener, CreaMovimentoDialog.CreaMovimentoListener {
+public class ContoActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+            ModificaMovimentoDialog.ModificaMovimentoListener,
+                CreaMovimentoDialog.CreaMovimentoListener, MovimentoAdapter.MovimentoListener {
 
     MovimentoAdapter movimentoAdapter;
     ListView listViewMovimenti;
@@ -61,15 +64,14 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // ToDo: imposta le info specifiche del conto selezionato
-        //  saldo totale: somma iniziale + somma di tutti i movimenti
+        // Imposta le info specifiche del conto selezionato
+        // saldo totale: somma iniziale + somma di tutti i movimenti
         conto = (Conto) getIntent().getSerializableExtra("conto");
         tvNomeConto = findViewById(R.id.text_view_nome_conto);
         tvSaldoConto = findViewById(R.id.text_view_saldo_conto);
-        tvNomeConto.setText("CONTO: "+conto.getNome());
 
         listViewMovimenti = findViewById(R.id.list_view_movimenti_conto);
-        movimentoAdapter = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>());
+        movimentoAdapter = new MovimentoAdapter(this, R.layout.list_view_movimento_element, new ArrayList<Movimento>(), this);
         listViewMovimenti.setAdapter(movimentoAdapter);
 
         contoDAO = new ContoDAO(getApplicationContext());
@@ -80,6 +82,9 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
                 movimentoAdapter.add(movimento);
             }
         }
+
+        tvNomeConto.setText("CONTO: " + conto.getNome());
+        tvSaldoConto.setText("Saldo corrente: " + movimentoDAO.doRetrieveCurrentBalance(conto.getNome()));
 
         listViewMovimenti.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,19 +105,29 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         creaMovimentoDialog.show(getSupportFragmentManager(), "Crea movimento");
     }
 
+    // modifica movimento
     @Override
     public void sendUpdatedMovimento(Movimento oldMovimento, Movimento newMovimento) {
         movimentoAdapter.remove(oldMovimento);
         movimentoDAO.updateMovimento(newMovimento);
         movimentoAdapter.add(newMovimento);
         movimentoAdapter.notifyDataSetChanged();
+        tvSaldoConto.setText("Saldo corrente: " + movimentoDAO.doRetrieveCurrentBalance(conto.getNome()));
     }
 
+    // aggiunta nuovo movimento
     @Override
     public void sendNewMovimento(Movimento movimento) {
         movimentoDAO.insertMovimento(movimento, conto.getNome());
         movimentoAdapter.add(movimento);
         movimentoAdapter.notifyDataSetChanged();
+        tvSaldoConto.setText("Saldo corrente: " + movimentoDAO.doRetrieveCurrentBalance(conto.getNome()));
+    }
+
+    // cancellazione movimento
+    @Override
+    public void deleteMovimento(Movimento movimento) {
+        tvSaldoConto.setText("Saldo corrente: " + movimentoDAO.doRetrieveCurrentBalance(conto.getNome()));
     }
 
     @Override
@@ -166,5 +181,4 @@ public class ContoActivity extends AppCompatActivity implements NavigationView.O
         }
         return true;
     }
-
 }

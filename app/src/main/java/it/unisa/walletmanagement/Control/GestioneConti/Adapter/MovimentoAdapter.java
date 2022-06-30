@@ -23,11 +23,22 @@ import it.unisa.walletmanagement.R;
 // movimento della lista dei movimenti di uno specifico conto
 public class MovimentoAdapter extends ArrayAdapter<Movimento> {
 
+    public interface MovimentoListener {
+        void deleteMovimento(Movimento movimento);
+    }
+
     private Context context;
+    private MovimentoListener movimentoListener;
 
     public MovimentoAdapter(@NonNull Context context, int resource, @NonNull List<Movimento> objects) {
         super(context, resource, objects);
         this.context = context;
+    }
+
+    public MovimentoAdapter(@NonNull Context context, int resource, @NonNull List<Movimento> objects, MovimentoListener movimentoListener) {
+        super(context, resource, objects);
+        this.context = context;
+        this.movimentoListener = movimentoListener;
     }
 
     @NonNull
@@ -52,6 +63,7 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
                 movimentoDAO.deleteMovimento(m.getId());
                 MovimentoAdapter.this.remove(getItem(position));
                 MovimentoAdapter.this.notifyDataSetChanged();
+                movimentoListener.deleteMovimento(m);
             }
         });
 

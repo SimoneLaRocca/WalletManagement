@@ -20,23 +20,25 @@ import android.widget.TextView;
 
 import java.util.GregorianCalendar;
 
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
+import it.unisa.walletmanagement.Model.Entity.ListaCategorie;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
 public class CreaMovimentoDialog extends DialogFragment {
 
-    TextView tvCancel, tvOK;
-    EditText etNome, etImporto;
-    Spinner dropdown;
-    ArrayAdapter<String> adapter;
-    String[] categorie;
-    Button entrata, uscita;
+    private TextView tvCancel, tvOK;
+    private EditText etNome, etImporto;
+    private Spinner dropdown;
+    private ArrayAdapter<String> adapter;
+    private ListaCategorie categorie;
+    private Button entrata, uscita;
 
     public interface CreaMovimentoListener{
         void sendNewMovimento(Movimento movimento);
     }
 
-    public CreaMovimentoListener creaMovimentoListener;
+    private CreaMovimentoListener creaMovimentoListener;
 
     public CreaMovimentoDialog() {
         // Required empty public constructor
@@ -54,9 +56,10 @@ public class CreaMovimentoDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_crea_movimento, container, false);
 
         dropdown = view.findViewById(R.id.spinner1);
-        // ToDo: popolare con la lista delle categorie
-        categorie = new String[]{"Lavoro", "Banca", "Spesa"};
-        adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie);
+
+        ListaCategorieDAO listaCategorieDAO = new ListaCategorieDAO(getActivity().getApplicationContext());
+        categorie = listaCategorieDAO.doRetrieveListaCategorie();
+        adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie.getCategorie());
         dropdown.setAdapter(adapter);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);

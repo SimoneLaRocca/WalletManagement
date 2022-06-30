@@ -2,6 +2,7 @@ package it.unisa.walletmanagement.Model.Dao;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unisa.walletmanagement.Model.Entity.ListaCategorie;
@@ -35,7 +36,11 @@ public class ListaCategorieDAO {
 
     public ListaCategorie doRetrieveListaCategorie(){
         ListaCategorie listaCategorie = new ListaCategorie();
-        listaCategorie.setCategorie(FileManager.readListFromFile(context, fileName));
+        List<String> list = FileManager.readListFromFile(context, fileName);
+        if(list == null || list.size() == 0){
+            return null;
+        }
+        listaCategorie.setCategorie(list);
         return listaCategorie;
     }
 }

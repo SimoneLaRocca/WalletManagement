@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvNessunConto = findViewById(R.id.text_view_nessun_conto);
 
         contoDAO = new ContoDAO(getApplicationContext());
-        lista_conti = (ArrayList<Conto>) contoDAO.doRetrieveAll();
+        lista_conti = (ArrayList<Conto>) contoDAO.doRetrieveAllWithCurrentBalance();
         if(lista_conti != null){
             tvNessunConto.setVisibility(View.INVISIBLE);
             listViewConto.setVisibility(View.VISIBLE);

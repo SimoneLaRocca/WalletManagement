@@ -1,7 +1,9 @@
 package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import android.view.LayoutInflater;
@@ -14,8 +16,14 @@ import it.unisa.walletmanagement.R;
 
 public class CreaCategoriaDialog extends DialogFragment {
 
-    TextView tvCancel, tvOK;
-    EditText etNome;
+    private TextView tvCancel, tvOK;
+    private EditText etNome;
+
+    public interface CategoriaListener{
+        void sendCategoria(String categoria);
+    }
+
+    private CategoriaListener categoriaListener;
 
     public CreaCategoriaDialog() {
         // Required empty public constructor
@@ -46,11 +54,22 @@ public class CreaCategoriaDialog extends DialogFragment {
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ToDo: crea la categoria o restituisci l'input all'activity
+                String categoria = etNome.getText().toString();
+                categoriaListener.sendCategoria(categoria);
                 getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            categoriaListener = (CategoriaListener) getActivity();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

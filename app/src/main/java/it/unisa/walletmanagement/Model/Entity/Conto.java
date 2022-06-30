@@ -40,21 +40,4 @@ public class Conto implements Serializable {
     public void setMovimenti(List<Movimento> movimenti) {
         this.movimenti = movimenti;
     }
-
-    public List<Movimento> searchMovimento(){
-        // quale criterio di ricerca?
-        return null;
-    }
-
-    public void addMovimento(Movimento m){
-        this.movimenti.add(m);
-    }
-
-    public boolean removeMovimento(Movimento m){
-        if(this.movimenti.contains(m)){
-            this.movimenti.remove(m);
-            return true;
-        }
-        return false;
-    }
 }

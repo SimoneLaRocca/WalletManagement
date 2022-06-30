@@ -21,27 +21,29 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import it.unisa.walletmanagement.Model.Dao.ContoDAO;
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
+import it.unisa.walletmanagement.Model.Entity.ListaCategorie;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
 public class CreaMovimentoGenericoDialog extends DialogFragment {
 
-    TextView tvCancel, tvOK;
-    EditText etNome, etImporto;
-    Spinner dropdown_conto;
-    Spinner dropdown_categoria;
-    ArrayAdapter<String> adapter_categorie;
-    ArrayAdapter<String> adapter_conti;
-    String[] categorie;
-    ArrayList<String> lista_nomi_conti;
-    Button entrata, uscita;
+    private TextView tvCancel, tvOK;
+    private EditText etNome, etImporto;
+    private Spinner dropdown_conto;
+    private Spinner dropdown_categoria;
+    private ArrayAdapter<String> adapter_categorie;
+    private ArrayAdapter<String> adapter_conti;
+    private ListaCategorie categorie;
+    private ArrayList<String> lista_nomi_conti;
+    private Button entrata, uscita;
 
     public interface CreaMovimentoGenericoListener{
         void sendNewMovimentoGenerico(Movimento movimento, String nome_conto);
     }
 
-    public CreaMovimentoGenericoListener creaMovimentoGenericoListener;
+    private CreaMovimentoGenericoListener creaMovimentoGenericoListener;
 
     public CreaMovimentoGenericoDialog() {
         // Required empty public constructor
@@ -61,9 +63,9 @@ public class CreaMovimentoGenericoDialog extends DialogFragment {
         dropdown_categoria = view.findViewById(R.id.spinner_categoria);
         dropdown_conto = view.findViewById(R.id.spinner_conto);
 
-        // ToDo: popolare con la lista delle categorie
-        categorie = new String[]{"Lavoro", "Banca", "Spesa"};
-        adapter_categorie = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie);
+        ListaCategorieDAO listaCategorieDAO = new ListaCategorieDAO(getActivity().getApplicationContext());
+        categorie = listaCategorieDAO.doRetrieveListaCategorie();
+        adapter_categorie = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie.getCategorie());
         dropdown_categoria.setAdapter(adapter_categorie);
 
         // getActivity().getApplicationContext() o getContext()
@@ -134,7 +136,6 @@ public class CreaMovimentoGenericoDialog extends DialogFragment {
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ToDo: crea il movimento o restituisci l'input all'activity
                 Movimento m = new Movimento();
                 m.setNome(etNome.getText().toString());
                 m.setImporto(Float.parseFloat(etImporto.getText().toString()));

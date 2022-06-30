@@ -25,18 +25,22 @@ import it.unisa.walletmanagement.Control.GestioneConti.Adapter.CategorieAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.ContoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaCategoriaDialog;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoGenericoDialog;
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
+import it.unisa.walletmanagement.Model.Entity.ListaCategorie;
 import it.unisa.walletmanagement.R;
 
-public class CategorieActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CategorieActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CreaCategoriaDialog.CategoriaListener {
 
-    ListView listViewCategorie;
-    CategorieAdapter categorieAdapter;
-    FloatingActionButton floatingActionButton;
-    DrawerLayout drawerLayout;
-    Toolbar toolbar;
-    NavigationView navigationView;
-    ActionBarDrawerToggle toggle;
+    private ListView listViewCategorie;
+    private CategorieAdapter categorieAdapter;
+    private ListaCategorieDAO listaCategorieDAO;
+
+    private FloatingActionButton floatingActionButton;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,6 @@ public class CategorieActivity extends AppCompatActivity implements NavigationVi
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ToDo: aggiungi la categoria all'adapter del listView
                 CreaCategoriaDialog creaCategoriaDialog = new CreaCategoriaDialog();
                 creaCategoriaDialog.show(getSupportFragmentManager(), "Crea categoria");
             }
@@ -69,10 +72,20 @@ public class CategorieActivity extends AppCompatActivity implements NavigationVi
         categorieAdapter = new CategorieAdapter(this, R.layout.list_view_categoria_element, new ArrayList<String>());
         listViewCategorie.setAdapter(categorieAdapter);
 
-        for (int i = 0; i<10; i++){
-            String test = "Prova";
-            categorieAdapter.add(test);
+        listaCategorieDAO = new ListaCategorieDAO(getApplicationContext());
+        ListaCategorie listaCategorie = listaCategorieDAO.doRetrieveListaCategorie();
+        if(listaCategorie != null){
+            for(String cat : listaCategorie.getCategorie()){
+                categorieAdapter.add(cat);
+            }
         }
+    }
+
+    @Override
+    public void sendCategoria(String categoria) {
+        listaCategorieDAO.insertCategoria(categoria);
+        categorieAdapter.add(categoria);
+        categorieAdapter.notifyDataSetChanged();
     }
 
     @Override

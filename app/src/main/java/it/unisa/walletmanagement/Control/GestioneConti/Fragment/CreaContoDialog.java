@@ -17,14 +17,14 @@ import it.unisa.walletmanagement.R;
 
 public class CreaContoDialog extends DialogFragment {
 
-    TextView tvCancel, tvOK;
-    EditText etNome, etSaldo;
+    private TextView tvCancel, tvOK;
+    private EditText etNome, etSaldo;
 
     public interface ContoListener{
         void sendConto(Conto conto);
     }
 
-    public ContoListener contoListener;
+    private ContoListener contoListener;
 
     public CreaContoDialog() {
         // Required empty public constructor

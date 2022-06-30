@@ -2,6 +2,8 @@ package it.unisa.walletmanagement.Model.Dao;
 
 import android.content.Context;
 
+import java.util.List;
+
 import it.unisa.walletmanagement.Model.Entity.ListaCategorie;
 import it.unisa.walletmanagement.Model.Entity.ListaSpesa;
 import it.unisa.walletmanagement.Model.Storage.FileManager;
@@ -34,7 +36,11 @@ public class ListaSpesaDAO {
 
     public ListaSpesa doRetrieveListaSpesa(){
         ListaSpesa listaSpesa = new ListaSpesa();
-        listaSpesa.setLista(FileManager.readListFromFile(context, fileName));
+        List<String> list = FileManager.readListFromFile(context, fileName);
+        if(list == null || list.size() == 0){
+            return null;
+        }
+        listaSpesa.setLista(list);
         return listaSpesa;
     }
 }

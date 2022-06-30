@@ -13,11 +13,7 @@ public class ListaCategorie implements Serializable {
         this.categorie = categorie;
     }
 
-    public ListaCategorie(String ... list) {
-        this.categorie = new ArrayList<String>();
-        for (String item : list){
-            this.categorie.add(item);
-        }
+    public ListaCategorie() {
     }
 
     public List<String> getCategorie() {
@@ -26,24 +22,5 @@ public class ListaCategorie implements Serializable {
 
     public void setCategorie(List<String> categorie) {
         this.categorie = categorie;
-    }
-
-    public void addCategoria(String nome){
-        this.categorie.add(nome);
-    }
-
-    public boolean removeCategoria(String nome){
-        if(this.categorie.contains(nome)){
-            this.categorie.remove(nome);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean containsCategoria(String nome){
-        if(this.categorie.contains(nome)){
-            return true;
-        }
-        return false;
     }
 }

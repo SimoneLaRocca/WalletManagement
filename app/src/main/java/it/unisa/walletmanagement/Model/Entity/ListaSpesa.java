@@ -20,12 +20,4 @@ public class ListaSpesa implements Serializable {
     public void setLista(List<String> lista) {
         this.lista = lista;
     }
-
-    public void addVoce(String voce){
-        lista.add(voce);
-    }
-
-    public void removeVoce(String voce){
-        lista.remove(voce);
-    }
 }

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoGenericoDialog;
@@ -31,7 +30,7 @@ import it.unisa.walletmanagement.Model.Dao.MovimentoDAO;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
-public class MovimentiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModificaMovimentoDialog.MovimentoListener, CreaMovimentoGenericoDialog.CreaMovimentoGenericoListener {
+public class MovimentiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModificaMovimentoDialog.ModificaMovimentoListener, CreaMovimentoGenericoDialog.CreaMovimentoGenericoListener {
 
     ListView listViewMovEntrate;
     ListView listViewMovUscite;
@@ -113,10 +112,9 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
     }
 
     public void creaMovimentoGenerico(View view) {
-        // ToDo: mostra toast customizzato: per aggiungere movimenti devi prima creare un conto
-        //  crea metodo: ContoDAO.doCountConto()
+        // mostra toast customizzato: per aggiungere movimenti devi prima creare un conto
         ContoDAO contoDAO = new ContoDAO(getApplicationContext());
-        if(contoDAO.doRetrieveAll() == null){
+        if(contoDAO.doCount() < 1){
             showToastCustomizzato();
         }else {
             CreaMovimentoGenericoDialog creaMovimentoGenericoDialog = new CreaMovimentoGenericoDialog();

@@ -15,27 +15,27 @@ import android.widget.TextView;
 
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import java.util.GregorianCalendar;
-
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
+import it.unisa.walletmanagement.Model.Entity.ListaCategorie;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
 
 public class ModificaMovimentoDialog extends androidx.fragment.app.DialogFragment {
 
-    TextView tvCancel, tvOK;
-    EditText etNome, etImporto;
-    Spinner dropdown;
-    ArrayAdapter<String> adapter;
-    String[] categorie;
-    Button entrata, uscita;
-    Movimento movimento;
+    private TextView tvCancel, tvOK;
+    private EditText etNome, etImporto;
+    private Spinner dropdown;
+    private ArrayAdapter<String> adapter;
+    private ListaCategorie categorie;
+    private Button entrata, uscita;
+    private Movimento movimento;
 
     // interfaccia usata per inviare dati all'activity
-    public interface MovimentoListener{
+    public interface ModificaMovimentoListener {
         void sendUpdatedMovimento(Movimento oldMovimento, Movimento newMovimento);
     }
 
-    public MovimentoListener movimentoListener;
+    private ModificaMovimentoListener modificaMovimentoListener;
 
     public ModificaMovimentoDialog() {
         // Required empty public constructor
@@ -56,9 +56,10 @@ public class ModificaMovimentoDialog extends androidx.fragment.app.DialogFragmen
         movimento = (Movimento) this.getArguments().getSerializable("movimento");
 
         dropdown = view.findViewById(R.id.spinner1);
-        // ToDo: popolare con la lista delle categorie
-        categorie = new String[]{"Lavoro", "Banca", "Spesa"};
-        adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie);
+
+        ListaCategorieDAO listaCategorieDAO = new ListaCategorieDAO(getActivity().getApplicationContext());
+        categorie = listaCategorieDAO.doRetrieveListaCategorie();
+        adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, categorie.getCategorie());
         dropdown.setAdapter(adapter);
 
         etNome = view.findViewById(R.id.edit_text_nome_movimento);
@@ -150,7 +151,7 @@ public class ModificaMovimentoDialog extends androidx.fragment.app.DialogFragmen
                 }else {
                     newMovimento.setTipo(0);
                 }
-                movimentoListener.sendUpdatedMovimento(movimento, newMovimento);
+                modificaMovimentoListener.sendUpdatedMovimento(movimento, newMovimento);
                 getDialog().dismiss();
             }
         });
@@ -162,7 +163,7 @@ public class ModificaMovimentoDialog extends androidx.fragment.app.DialogFragmen
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            movimentoListener = (MovimentoListener) getActivity();
+            modificaMovimentoListener = (ModificaMovimentoListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

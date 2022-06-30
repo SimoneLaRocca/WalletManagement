@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.Model.Storage.DatabaseHelper;
 import it.unisa.walletmanagement.Model.Storage.SchemaDB;
@@ -54,27 +55,6 @@ public class MovimentoDAO {
         contentValues.put(SchemaDB.Movimento.COLUMN_NOME_CONTO, nome_conto);
         sqLiteDatabase.insert(SchemaDB.Movimento.TABLE_NAME, null, contentValues);
 
-        return true;
-    }
-
-    // usato per cambiare un movimento da un conto a un altro
-    public boolean updateMovimento(Movimento movimento, String nome_conto){
-        SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String text_date = simpleDateFormat.format(movimento.getData().getTime());
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(SchemaDB.Movimento.COLUMN_NOME, movimento.getNome());
-        contentValues.put(SchemaDB.Movimento.COLUMN_IMPORTO, movimento.getImporto());
-        contentValues.put(SchemaDB.Movimento.COLUMN_TIPO, movimento.getTipo());
-        contentValues.put(SchemaDB.Movimento.COLUMN_CATEGORIA, movimento.getCategoria());
-        contentValues.put(SchemaDB.Movimento.COLUMN_DATA, text_date);
-        contentValues.put(SchemaDB.Movimento.COLUMN_NOME_CONTO, nome_conto);
-        sqLiteDatabase.insert(SchemaDB.Movimento.TABLE_NAME, null, contentValues);
-        String where = SchemaDB.Movimento.COLUMN_ID + "=?";
-        String whereArgs[]= {String.valueOf(movimento.getId())};
-
-        sqLiteDatabase.update(SchemaDB.Movimento.TABLE_NAME, contentValues, where, whereArgs);
         return true;
     }
 
@@ -175,4 +155,55 @@ public class MovimentoDAO {
         cursor.close();
         return movimenti;
     }
+
+    public float doRetrieveCurrentBalance(String nome_conto){
+        SQLiteDatabase sqLiteDatabase = databaseHelper.getReadableDatabase();
+        String query = "SELECT " +
+                "COALESCE((SELECT SUM(" + SchemaDB.Movimento.COLUMN_IMPORTO + ") " +
+                "FROM " + SchemaDB.Movimento.TABLE_NAME + " " +
+                "WHERE " + SchemaDB.Movimento.COLUMN_TIPO + " = 1 AND " + SchemaDB.Movimento.COLUMN_NOME_CONTO + " = ?), 0) - " +
+                "COALESCE((SELECT SUM(" + SchemaDB.Movimento.COLUMN_IMPORTO + ") " +
+                "FROM " + SchemaDB.Movimento.TABLE_NAME + " " +
+                "WHERE " + SchemaDB.Movimento.COLUMN_TIPO + " = 0 AND " + SchemaDB.Movimento.COLUMN_NOME_CONTO + " = ?), 0) AS sum";
+        float value = 0;
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{nome_conto, nome_conto});
+        if(cursor.moveToNext()){
+            value += cursor.getFloat(cursor.getColumnIndexOrThrow("sum"));
+        }
+
+        query = "SELECT " + SchemaDB.Conto.COLUMN_SALDO +
+                " FROM " + SchemaDB.Conto.TABLE_NAME +
+                " WHERE " + SchemaDB.Conto.COLUMN_NOME + " = ? ";
+        cursor = sqLiteDatabase.rawQuery(query, new String[]{nome_conto});
+        if(cursor.moveToNext()){
+            value += cursor.getFloat(cursor.getColumnIndexOrThrow(SchemaDB.Conto.COLUMN_SALDO));
+        }
+
+        sqLiteDatabase.close();
+        cursor.close();
+        return value;
+    }
+
+    /*
+    // usato per spostare un movimento da un conto a un altro
+    public boolean updateMovimento(Movimento movimento, String nome_conto){
+        SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String text_date = simpleDateFormat.format(movimento.getData().getTime());
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SchemaDB.Movimento.COLUMN_NOME, movimento.getNome());
+        contentValues.put(SchemaDB.Movimento.COLUMN_IMPORTO, movimento.getImporto());
+        contentValues.put(SchemaDB.Movimento.COLUMN_TIPO, movimento.getTipo());
+        contentValues.put(SchemaDB.Movimento.COLUMN_CATEGORIA, movimento.getCategoria());
+        contentValues.put(SchemaDB.Movimento.COLUMN_DATA, text_date);
+        contentValues.put(SchemaDB.Movimento.COLUMN_NOME_CONTO, nome_conto);
+        sqLiteDatabase.insert(SchemaDB.Movimento.TABLE_NAME, null, contentValues);
+        String where = SchemaDB.Movimento.COLUMN_ID + "=?";
+        String whereArgs[]= {String.valueOf(movimento.getId())};
+
+        sqLiteDatabase.update(SchemaDB.Movimento.TABLE_NAME, contentValues, where, whereArgs);
+        return true;
+    }*/
 }

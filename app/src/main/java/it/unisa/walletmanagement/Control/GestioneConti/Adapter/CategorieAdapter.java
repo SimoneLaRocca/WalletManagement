@@ -13,13 +13,17 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
 public class CategorieAdapter extends ArrayAdapter<String> {
 
+    private Context context;
+
     public CategorieAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
         super(context, resource, objects);
+        this.context = context;
     }
 
     @NonNull
@@ -36,9 +40,11 @@ public class CategorieAdapter extends ArrayAdapter<String> {
         ivCancella.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CategorieAdapter.this.remove(getItem(position));
+                String categoria = getItem((position));
+                ListaCategorieDAO listaCategorieDAO = new ListaCategorieDAO(context);
+                listaCategorieDAO.deleteCategoria(categoria);
+                CategorieAdapter.this.remove(categoria);
                 CategorieAdapter.this.notifyDataSetChanged();
-                // ToDo: cancella categoria
             }
         });
 
