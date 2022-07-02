@@ -57,16 +57,36 @@ public class CreaContoDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 // crea il conto o restituisci l'input all'activity
-                Conto c = new Conto();
-                c.setNome(etNome.getText().toString());
-                c.setSaldo(Float.parseFloat(etSaldo.getText().toString()));
-                c.setMovimenti(null);
-                contoListener.sendConto(c);
-                getDialog().dismiss();
+                if(CheckAllFields()){
+                    Conto c = new Conto();
+                    c.setNome(etNome.getText().toString());
+                    c.setSaldo(Float.parseFloat(etSaldo.getText().toString()));
+                    c.setMovimenti(null);
+                    contoListener.sendConto(c);
+                    getDialog().dismiss();
+                }
             }
         });
 
         return view;
+    }
+
+    private boolean CheckAllFields() {
+        if (etNome.getText().toString().length() == 0) {
+            etNome.setError("Questo campo è richiesto");
+            return false;
+        }
+
+        if (etSaldo.getText().toString().length() == 0) {
+            etSaldo.setError("Questo campo è richiesto");
+            return false;
+        } else if(Float.parseFloat(etSaldo.getText().toString()) < 0){
+            etSaldo.setError("Il saldo deve essere positivo");
+            return false;
+        }
+
+        // after all validation return true.
+        return true;
     }
 
     @Override

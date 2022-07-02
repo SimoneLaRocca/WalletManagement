@@ -1,32 +1,34 @@
-package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
+package it.unisa.walletmanagement.Control.Impostazioni.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaContoDialog;
+import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
 
-public class CreaCategoriaDialog extends DialogFragment {
+public class ImpostaPasswordDialog extends DialogFragment {
 
     private TextView tvCancel, tvOK;
-    private EditText etNome;
+    private EditText etFirstPassword, etSecondPassword;
 
-    public interface CategoriaListener{
-        void sendCategoria(String categoria);
+    public interface PasswordListener{
+        void sendPassword(String password);
     }
 
-    private CategoriaListener categoriaListener;
+    private PasswordListener passwordListener;
 
-    public CreaCategoriaDialog() {
+    public ImpostaPasswordDialog() {
         // Required empty public constructor
     }
 
@@ -39,11 +41,12 @@ public class CreaCategoriaDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_crea_categoria, container, false);
+        View view = inflater.inflate(R.layout.fragment_imposta_password_dialog, container, false);
 
-        etNome = view.findViewById(R.id.edit_text_nome_categoria);
         tvCancel = view.findViewById(R.id.tv_cancel);
         tvOK = view.findViewById(R.id.tv_ok);
+        etFirstPassword = view.findViewById(R.id.edit_text_first_password);
+        etSecondPassword = view.findViewById(R.id.edit_text_second_password);
 
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +59,7 @@ public class CreaCategoriaDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if(CheckAllFields()){
-                    String categoria = etNome.getText().toString();
-                    categoriaListener.sendCategoria(categoria);
+                    passwordListener.sendPassword(etFirstPassword.getText().toString());
                     getDialog().dismiss();
                 }
             }
@@ -66,10 +68,20 @@ public class CreaCategoriaDialog extends DialogFragment {
         return view;
     }
 
-    // validazione input
     private boolean CheckAllFields() {
-        if (etNome.getText().toString().length() == 0) {
-            etNome.setError("Questo campo è richiesto");
+        if (etFirstPassword.getText().toString().length() < 0) {
+            etFirstPassword.setError("Questo campo è richiesto");
+            return false;
+        } else if(etFirstPassword.getText().toString().length() < 4){
+            etFirstPassword.setError("Almeno 4 caratteri/cifre");
+            return false;
+        }
+
+        if (etSecondPassword.getText().toString().length() == 0) {
+            etSecondPassword.setError("Questo campo è richiesto");
+            return false;
+        } else if(!etFirstPassword.getText().toString().equals(etSecondPassword.getText().toString())){
+            etSecondPassword.setError("Retyping error");
             return false;
         }
 
@@ -81,7 +93,7 @@ public class CreaCategoriaDialog extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            categoriaListener = (CategoriaListener) getActivity();
+            passwordListener = (PasswordListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.GregorianCalendar;
 
@@ -120,22 +121,50 @@ public class CreaMovimentoDialog extends DialogFragment {
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Movimento m = new Movimento();
-                m.setNome(etNome.getText().toString());
-                m.setImporto(Float.parseFloat(etImporto.getText().toString()));
-                m.setCategoria((String) dropdown.getSelectedItem());
-                m.setData(new GregorianCalendar());
-                if(entrata.getTag().equals(true)){
-                    m.setTipo(1);
-                }else {
-                    m.setTipo(0);
+                if(CheckAllFields()){
+                    Movimento m = new Movimento();
+                    m.setNome(etNome.getText().toString());
+                    m.setImporto(Float.parseFloat(etImporto.getText().toString()));
+                    m.setCategoria((String) dropdown.getSelectedItem());
+                    m.setData(new GregorianCalendar());
+                    if(entrata.getTag().equals(true)){
+                        m.setTipo(1);
+                    }else {
+                        m.setTipo(0);
+                    }
+                    creaMovimentoListener.sendNewMovimento(m);
+                    getDialog().dismiss();
                 }
-                creaMovimentoListener.sendNewMovimento(m);
-                getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    // validazione input
+    private boolean CheckAllFields() {
+        if (etNome.getText().toString().length() == 0) {
+            etNome.setError("Questo campo è richiesto");
+            return false;
+        }
+
+        if (etImporto.getText().toString().length() == 0) {
+            etImporto.setError("Questo campo è richiesto");
+            return false;
+        } else if(Float.parseFloat(etImporto.getText().toString()) < 0){
+            etImporto.setError("L'importo deve essere positivo");
+            return false;
+        }
+
+        if (entrata.getTag().equals(false) && uscita.getTag().equals(false)) {
+            //entrata.setError("Scegliere il tipo");
+            //uscita.setError("Scegliere il tipo");
+            Toast.makeText(getActivity().getApplicationContext(), "Scegliere il tipo", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // after all validation return true.
+        return true;
     }
 
     @Override

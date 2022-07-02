@@ -14,13 +14,30 @@ import java.util.List;
 public class FileManager {
 
     // mode: false = write / true = append
-    public static boolean writeToFile(Context context, String fileName, String content, boolean mode){
+    public static boolean writeRecordToFile(Context context, String fileName, String content, boolean mode){
         String[] list = context.fileList();
         File path = context.getFilesDir();
         FileOutputStream writer = null;
         try {
             writer = new FileOutputStream(new File(path, fileName), mode);
             content += "\n";
+            writer.write(content.getBytes());
+            writer.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean writeToFile(Context context, String fileName, String content, boolean mode){
+        String[] list = context.fileList();
+        File path = context.getFilesDir();
+        FileOutputStream writer = null;
+        try {
+            writer = new FileOutputStream(new File(path, fileName), mode);
             writer.write(content.getBytes());
             writer.close();
             return true;

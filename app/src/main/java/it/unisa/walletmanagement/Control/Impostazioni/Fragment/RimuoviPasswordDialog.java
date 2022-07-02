@@ -1,49 +1,50 @@
-package it.unisa.walletmanagement.Control.GestioneConti.Fragment;
+package it.unisa.walletmanagement.Control.Impostazioni.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import it.unisa.walletmanagement.Control.Impostazioni.SecurityManager;
 import it.unisa.walletmanagement.R;
 
-public class CreaCategoriaDialog extends DialogFragment {
+public class RimuoviPasswordDialog extends DialogFragment {
 
     private TextView tvCancel, tvOK;
-    private EditText etNome;
+    private EditText etPassword;
 
-    public interface CategoriaListener{
-        void sendCategoria(String categoria);
+    public interface PasswordListener{
+        void sendDeletedPassword(String password);
     }
 
-    private CategoriaListener categoriaListener;
+    private PasswordListener passwordListener;
 
-    public CreaCategoriaDialog() {
+    public RimuoviPasswordDialog() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_crea_categoria, container, false);
+        View view = inflater.inflate(R.layout.fragment_rimuovi_password_dialog, container, false);
 
-        etNome = view.findViewById(R.id.edit_text_nome_categoria);
         tvCancel = view.findViewById(R.id.tv_cancel);
         tvOK = view.findViewById(R.id.tv_ok);
+        etPassword = view.findViewById(R.id.edit_text_password);
 
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +57,7 @@ public class CreaCategoriaDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if(CheckAllFields()){
-                    String categoria = etNome.getText().toString();
-                    categoriaListener.sendCategoria(categoria);
+                    passwordListener.sendDeletedPassword(etPassword.getText().toString());
                     getDialog().dismiss();
                 }
             }
@@ -66,10 +66,13 @@ public class CreaCategoriaDialog extends DialogFragment {
         return view;
     }
 
-    // validazione input
     private boolean CheckAllFields() {
-        if (etNome.getText().toString().length() == 0) {
-            etNome.setError("Questo campo è richiesto");
+        SecurityManager securityManager = new SecurityManager(getActivity().getApplicationContext());
+        if (etPassword.getText().toString().length() == 0) {
+            etPassword.setError("Questo campo è richiesto");
+            return false;
+        } else if(!securityManager.checkLogin(etPassword.getText().toString())){
+            etPassword.setError("Password errata");
             return false;
         }
 
@@ -81,7 +84,7 @@ public class CreaCategoriaDialog extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            categoriaListener = (CategoriaListener) getActivity();
+            passwordListener = (PasswordListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

@@ -140,23 +140,47 @@ public class ModificaMovimentoDialog extends androidx.fragment.app.DialogFragmen
         tvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Movimento newMovimento = new Movimento();
-                newMovimento.setId(movimento.getId());
-                newMovimento.setNome(etNome.getText().toString());
-                newMovimento.setImporto(Float.parseFloat(etImporto.getText().toString()));
-                newMovimento.setCategoria((String) dropdown.getSelectedItem());
-                newMovimento.setData(movimento.getData());
-                if(entrata.getTag().equals(true)){
-                    newMovimento.setTipo(1);
-                }else {
-                    newMovimento.setTipo(0);
+                if(CheckAllFields()){
+                    Movimento newMovimento = new Movimento();
+                    newMovimento.setId(movimento.getId());
+                    newMovimento.setNome(etNome.getText().toString());
+                    newMovimento.setImporto(Float.parseFloat(etImporto.getText().toString()));
+                    newMovimento.setCategoria((String) dropdown.getSelectedItem());
+                    newMovimento.setData(movimento.getData());
+                    if(entrata.getTag().equals(true)){
+                        newMovimento.setTipo(1);
+                    }else {
+                        newMovimento.setTipo(0);
+                    }
+                    modificaMovimentoListener.sendUpdatedMovimento(movimento, newMovimento);
+                    getDialog().dismiss();
                 }
-                modificaMovimentoListener.sendUpdatedMovimento(movimento, newMovimento);
-                getDialog().dismiss();
             }
         });
 
         return view;
+    }
+
+    private boolean CheckAllFields() {
+        if (etNome.getText().toString().length() == 0) {
+            etNome.setError("Questo campo è richiesto");
+            return false;
+        }
+
+        if (etImporto.getText().toString().length() == 0) {
+            etImporto.setError("Questo campo è richiesto");
+            return false;
+        } else if(Float.parseFloat(etImporto.getText().toString()) < 0){
+            etImporto.setError("L'importo deve essere positivo");
+            return false;
+        }
+
+        if (entrata.getTag().equals(false) && uscita.getTag().equals(false)) {
+            return false;
+        }
+
+        // after all validation return true.
+        return true;
     }
 
     @Override

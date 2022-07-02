@@ -24,7 +24,7 @@ public class ListaSpesaDAO {
     }
 
     public boolean insertVoce(String voce){
-        if(FileManager.writeToFile(context, fileName, voce, true)){
+        if(FileManager.writeRecordToFile(context, fileName, voce, true)){
             return true;
         }
         return false;

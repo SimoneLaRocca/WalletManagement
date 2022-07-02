@@ -24,6 +24,9 @@ import java.util.ArrayList;
 
 import it.unisa.walletmanagement.Control.GestioneConti.Adapter.ContoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaContoDialog;
+import it.unisa.walletmanagement.Control.Impostazioni.ImpostazioniActivity;
+import it.unisa.walletmanagement.Control.Impostazioni.LoginActivity;
+import it.unisa.walletmanagement.Control.Impostazioni.SecurityManager;
 import it.unisa.walletmanagement.Model.Dao.ContoDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
@@ -48,6 +51,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_activity_home);
+
+        boolean login = getIntent().getBooleanExtra("login", false);
+        SecurityManager securityManager = new SecurityManager(getApplicationContext());
+        if(securityManager.isSecurityEnabled() && !login){
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            HomeActivity.this.finish();
+        }
 
         // navigation drawer code
         drawerLayout = findViewById(R.id.drawer_view);
@@ -147,6 +158,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.listaSpesa:
                 break;
             case R.id.impostazioni:
+                i = new Intent(HomeActivity.this, ImpostazioniActivity.class);
+                startActivity(i);
                 break;
             case R.id.logout:
                 break;

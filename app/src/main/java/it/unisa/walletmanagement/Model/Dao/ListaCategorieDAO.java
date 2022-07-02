@@ -24,7 +24,7 @@ public class ListaCategorieDAO {
     }
 
     public boolean insertCategoria(String nome){
-        if(FileManager.writeToFile(context, fileName, nome, true)){
+        if(FileManager.writeRecordToFile(context, fileName, nome, true)){
             return true;
         }
         return false;
