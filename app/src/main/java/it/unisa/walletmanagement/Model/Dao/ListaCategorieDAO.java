@@ -37,7 +37,7 @@ public class ListaCategorieDAO {
     public ListaCategorie doRetrieveListaCategorie(){
         ListaCategorie listaCategorie = new ListaCategorie();
         List<String> list = FileManager.readListFromFile(context, fileName);
-        if(list == null || list.size() == 0){
+        if(list == null || list.size() == 0 || list.get(0).equals("")){
             return null;
         }
         listaCategorie.setCategorie(list);

@@ -11,11 +11,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,6 +27,7 @@ import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoDialog;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.ModificaMovimentoDialog;
 import it.unisa.walletmanagement.Model.Dao.ContoDAO;
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
 import it.unisa.walletmanagement.Model.Dao.MovimentoDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
@@ -40,6 +43,7 @@ public class ContoActivity extends AppCompatActivity
     Conto conto;
     ContoDAO contoDAO;
     MovimentoDAO movimentoDAO;
+    ListaCategorieDAO listaCategorieDAO;
 
     TextView tvNomeConto, tvSaldoConto;
 
@@ -86,23 +90,33 @@ public class ContoActivity extends AppCompatActivity
         tvNomeConto.setText("CONTO: " + conto.getNome());
         tvSaldoConto.setText("Saldo corrente: " + movimentoDAO.doRetrieveCurrentBalance(conto.getNome()));
 
+        listaCategorieDAO = new ListaCategorieDAO(getApplicationContext());
+
         listViewMovimenti.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
-                Movimento movimento = (Movimento) listViewMovimenti.getItemAtPosition(i);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("movimento", movimento);
-                ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
-                dialog.setArguments(bundle);
-                dialog.show(getSupportFragmentManager(), "Movimento");
+                if(listaCategorieDAO.doRetrieveListaCategorie() == null) {
+                    showToastCustomizzato(R.layout.custom_toast_categoria);
+                } else {
+                    Movimento movimento = (Movimento) listViewMovimenti.getItemAtPosition(i);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("movimento", movimento);
+                    ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(), "Movimento");
+                }
             }
         });
     }
 
     public void creaMovimento(View view) {
-        CreaMovimentoDialog creaMovimentoDialog = new CreaMovimentoDialog();
-        creaMovimentoDialog.show(getSupportFragmentManager(), "Crea movimento");
+        if(listaCategorieDAO.doRetrieveListaCategorie() == null) {
+            showToastCustomizzato(R.layout.custom_toast_categoria);
+        } else {
+            CreaMovimentoDialog creaMovimentoDialog = new CreaMovimentoDialog();
+            creaMovimentoDialog.show(getSupportFragmentManager(), "Crea movimento");
+        }
     }
 
     // modifica movimento
@@ -128,6 +142,14 @@ public class ContoActivity extends AppCompatActivity
     @Override
     public void deleteMovimento(Movimento movimento) {
         tvSaldoConto.setText("Saldo corrente: " + movimentoDAO.doRetrieveCurrentBalance(conto.getNome()));
+    }
+
+    public void showToastCustomizzato(int layout) {
+        Toast toast = new Toast(getApplicationContext());
+        toast.setView(getLayoutInflater().inflate(layout, null));
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override

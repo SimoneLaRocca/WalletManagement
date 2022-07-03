@@ -19,10 +19,14 @@
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_home.xml" value="0.17328519855595667" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_impostazioni.xml" value="0.2427536231884058" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_impostazioni2.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_lista_spesa.xml" value="0.26856884057971014" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_login.xml" value="0.2427536231884058" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/activity_movimenti.xml" value="0.1" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/custom_toast.xml" value="0.25815217391304346" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/custom_toast_categoria.xml" value="0.264945652173913" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/custom_toast_conto.xml" value="0.264945652173913" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_aggiungi_voce_dialog.xml" value="0.26856884057971014" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_cambia_password_dialog.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_crea_categoria.xml" value="0.25181159420289856" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/fragment_crea_conto.xml" value="0.23097826086956522" />
@@ -37,11 +41,13 @@
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/list_view_categoria_element.xml" value="0.23097826086956522" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/list_view_conto_element.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/list_view_movimento_element.xml" value="0.22418478260869565" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/list_view_voce_element.xml" value="0.26856884057971014" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_categorie.xml" value="0.23097826086956522" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_conto.xml" value="0.24864130434782608" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_home.xml" value="0.24864130434782608" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_impostazioni.xml" value="0.27219202898550726" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_impostazioni2.xml" value="0.27219202898550726" />
+        <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_lista_spesa.xml" value="0.26856884057971014" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/nav_activity_movimenti.xml" value="0.24003623188405798" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/layout/toolbar.xml" value="0.24864130434782608" />
         <entry key="..\:/Users/simon/AndroidStudioProjects/WalletManagement/app/src/main/res/menu/main_menu.xml" value="0.30416666666666664" />

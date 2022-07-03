@@ -27,6 +27,7 @@ import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaContoDialog;
 import it.unisa.walletmanagement.Control.Impostazioni.ImpostazioniActivity;
 import it.unisa.walletmanagement.Control.Impostazioni.LoginActivity;
 import it.unisa.walletmanagement.Control.Impostazioni.SecurityManager;
+import it.unisa.walletmanagement.Control.ListaSpesa.ListaSpesaActivity;
 import it.unisa.walletmanagement.Model.Dao.ContoDAO;
 import it.unisa.walletmanagement.Model.Entity.Conto;
 import it.unisa.walletmanagement.R;
@@ -156,6 +157,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.grafici:
                 break;
             case R.id.listaSpesa:
+                i = new Intent(HomeActivity.this, ListaSpesaActivity.class);
+                startActivity(i);
                 break;
             case R.id.impostazioni:
                 i = new Intent(HomeActivity.this, ImpostazioniActivity.class);

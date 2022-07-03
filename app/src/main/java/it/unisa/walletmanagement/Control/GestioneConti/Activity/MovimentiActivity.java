@@ -26,6 +26,7 @@ import it.unisa.walletmanagement.Control.GestioneConti.Adapter.MovimentoAdapter;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.CreaMovimentoGenericoDialog;
 import it.unisa.walletmanagement.Control.GestioneConti.Fragment.ModificaMovimentoDialog;
 import it.unisa.walletmanagement.Model.Dao.ContoDAO;
+import it.unisa.walletmanagement.Model.Dao.ListaCategorieDAO;
 import it.unisa.walletmanagement.Model.Dao.MovimentoDAO;
 import it.unisa.walletmanagement.Model.Entity.Movimento;
 import it.unisa.walletmanagement.R;
@@ -39,6 +40,8 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
     ArrayList<Movimento> lista_entrate;
     ArrayList<Movimento> lista_uscite;
     MovimentoDAO movimentoDAO;
+    ContoDAO contoDAO;
+    ListaCategorieDAO listaCategorieDAO;
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -84,16 +87,23 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
             }
         }
 
+        contoDAO = new ContoDAO(getApplicationContext());
+        listaCategorieDAO = new ListaCategorieDAO(getApplicationContext());
+
         listViewMovEntrate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
-                Movimento movimento = (Movimento) listViewMovEntrate.getItemAtPosition(i);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("movimento", movimento);
-                ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
-                dialog.setArguments(bundle);
-                dialog.show(getSupportFragmentManager(), "Movimento");
+                if(listaCategorieDAO.doRetrieveListaCategorie() == null) {
+                    showToastCustomizzato(R.layout.custom_toast_categoria);
+                } else {
+                    Movimento movimento = (Movimento) listViewMovEntrate.getItemAtPosition(i);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("movimento", movimento);
+                    ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(), "Movimento");
+                }
             }
         });
 
@@ -101,22 +111,27 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // recupera il movimento, aggiungilo al bundle, crea il fragment, chiama show()
-                Movimento movimento = (Movimento) listViewMovUscite.getItemAtPosition(i);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("movimento", movimento);
-                ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
-                dialog.setArguments(bundle);
-                dialog.show(getSupportFragmentManager(), "Movimento");
+                if(listaCategorieDAO.doRetrieveListaCategorie() == null) {
+                    showToastCustomizzato(R.layout.custom_toast_categoria);
+                } else {
+                    Movimento movimento = (Movimento) listViewMovUscite.getItemAtPosition(i);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("movimento", movimento);
+                    ModificaMovimentoDialog dialog = new ModificaMovimentoDialog();
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(), "Movimento");
+                }
             }
         });
     }
 
     public void creaMovimentoGenerico(View view) {
         // mostra toast customizzato: per aggiungere movimenti devi prima creare un conto
-        ContoDAO contoDAO = new ContoDAO(getApplicationContext());
         if(contoDAO.doCount() < 1){
-            showToastCustomizzato();
-        }else {
+            showToastCustomizzato(R.layout.custom_toast_conto);
+        } else if(listaCategorieDAO.doRetrieveListaCategorie() == null){
+            showToastCustomizzato(R.layout.custom_toast_categoria);
+        } else {
             CreaMovimentoGenericoDialog creaMovimentoGenericoDialog = new CreaMovimentoGenericoDialog();
             creaMovimentoGenericoDialog.show(getSupportFragmentManager(), "Crea movimento generico");
         }
@@ -152,9 +167,9 @@ public class MovimentiActivity extends AppCompatActivity implements NavigationVi
         }
     }
 
-    public void showToastCustomizzato() {
+    public void showToastCustomizzato(int layout) {
         Toast toast = new Toast(getApplicationContext());
-        toast.setView(getLayoutInflater().inflate(R.layout.custom_toast, null));
+        toast.setView(getLayoutInflater().inflate(layout, null));
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();

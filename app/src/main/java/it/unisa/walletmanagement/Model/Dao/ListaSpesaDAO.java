@@ -37,7 +37,7 @@ public class ListaSpesaDAO {
     public ListaSpesa doRetrieveListaSpesa(){
         ListaSpesa listaSpesa = new ListaSpesa();
         List<String> list = FileManager.readListFromFile(context, fileName);
-        if(list == null || list.size() == 0){
+        if(list == null || list.size() == 0 || list.get(0).equals("")){
             return null;
         }
         listaSpesa.setLista(list);
