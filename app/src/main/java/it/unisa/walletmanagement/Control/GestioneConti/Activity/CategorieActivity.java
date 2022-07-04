@@ -84,9 +84,10 @@ public class CategorieActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public void sendCategoria(String categoria) {
-        listaCategorieDAO.insertCategoria(categoria);
-        categorieAdapter.add(categoria);
-        categorieAdapter.notifyDataSetChanged();
+        if(listaCategorieDAO.insertCategoria(categoria)){
+            categorieAdapter.add(categoria);
+            categorieAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

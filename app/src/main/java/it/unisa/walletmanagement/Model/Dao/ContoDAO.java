@@ -26,8 +26,13 @@ public class ContoDAO {
 
     public boolean insertConto(String nome, float saldo){
         SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
-        if(nome.equals("") || saldo < 0){
-            return false;
+        ArrayList<Conto> list = (ArrayList<Conto>) doRetrieveAll();
+        if(list != null){
+            for(Conto conto : list){
+                if(conto.getNome().equals(nome)){
+                    return false;
+                }
+            }
         }
         ContentValues contentValues = new ContentValues();
         contentValues.put(SchemaDB.Conto.COLUMN_NOME, nome);

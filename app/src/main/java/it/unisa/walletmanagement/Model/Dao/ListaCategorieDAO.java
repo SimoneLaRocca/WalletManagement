@@ -24,6 +24,12 @@ public class ListaCategorieDAO {
     }
 
     public boolean insertCategoria(String nome){
+        ListaCategorie listaCategorie = doRetrieveListaCategorie();
+        if(listaCategorie != null){
+            if(listaCategorie.getCategorie().contains(nome)){
+                return false;
+            }
+        }
         if(FileManager.writeRecordToFile(context, fileName, nome, true)){
             return true;
         }

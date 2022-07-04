@@ -111,9 +111,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void sendConto(Conto conto) {
         tvNessunConto.setVisibility(View.INVISIBLE);
         listViewConto.setVisibility(View.VISIBLE);
-        contoDAO.insertConto(conto.getNome(), conto.getSaldo());
-        contoAdapter.add(conto);
-        contoAdapter.notifyDataSetChanged();
+        if(contoDAO.insertConto(conto.getNome(), conto.getSaldo())){
+            contoAdapter.add(conto);
+            contoAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
